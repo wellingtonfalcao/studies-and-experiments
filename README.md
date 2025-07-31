@@ -1,4 +1,4 @@
-# 💡 Studies and Experiments · Estudos e Experimentos
+# 💡 Estudos e Experimentos · Studies and Experiments
 
 Este repositório é uma coleção pessoal de estudos, testes e experimentações em diversas áreas da computação. Aqui você encontrará códigos, anotações e projetos que me ajudam a entender melhor conceitos práticos e teóricos.
 
@@ -6,15 +6,15 @@ This repository is a personal collection of studies, tests, and experiments in v
 
 ---
 
-## 📁 Estrutura · Structure
+## 📁  Estrutura · Structure
 
-/assembly/ # Estudos e testes com linguagem Assembly
-/c/ # Programas em linguagem C
-/java/ # Exercícios e projetos em Java
-/java-spring/ # Projetos com Spring Boot
-/python/ # Scripts e estudos com Python
-/esp32/ # Projetos embarcados com ESP32
-/others/ # Outros testes e códigos diversos
+- /assembly/ # Estudos e testes com linguagem Assembly
+- /c/ # Programas em linguagem C
+- /java/ # Exercícios e projetos em Java
+- /java-spring/ # Projetos com Spring Boot
+- /python/ # Scripts e estudos com Python
+- /esp32/ # Projetos embarcados com ESP32
+- /others/ # Outros testes e códigos diversos
 
 ---
 
