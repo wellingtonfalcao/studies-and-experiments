@@ -8,7 +8,7 @@
 
 ## 📁  Estrutura · Structure
 
-- /spring-boot/ # Projetos com Spring Boot
+- /spring-boot/ # Spring Boot Projects
 
 
 ---
