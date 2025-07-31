@@ -57,6 +57,6 @@ This repository is a personal collection of studies, tests, and experiments in v
 
 ## 📬 Contato · Contact
 
-- GitHub: [seu usuário]
-- LinkedIn: [seu link]
-- Email: [seu e-mail]
+- GitHub: github.com/wellingtonfalcao
+- LinkedIn: https://www.linkedin.com/in/wellingtonfalcao/
+- Email: wellingtonfalcao@gmail.com
