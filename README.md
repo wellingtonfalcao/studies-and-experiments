@@ -8,13 +8,8 @@ This repository is a personal collection of studies, tests, and experiments in v
 
 ## 📁  Estrutura · Structure
 
-- /assembly/ # Estudos e testes com linguagem Assembly
-- /c/ # Programas em linguagem C
-- /java/ # Exercícios e projetos em Java
-- /java-spring/ # Projetos com Spring Boot
-- /python/ # Scripts e estudos com Python
-- /esp32/ # Projetos embarcados com ESP32
-- /others/ # Outros testes e códigos diversos
+- /spring-boot/ # Projetos com Spring Boot
+
 
 ---
 
