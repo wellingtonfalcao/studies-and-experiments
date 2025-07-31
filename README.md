@@ -2,7 +2,7 @@
 
 🇧🇷 Este repositório é uma coleção pessoal de estudos, testes e experimentações em diversas áreas da computação. Aqui você encontrará códigos, anotações e projetos que me ajudam a entender melhor conceitos práticos e teóricos.
 
-🇺🇸 This repository is a personal collection of studies, tests, and experiments in various areas of computing. Here you'll find code, notes, and projects that help me better understand both practical and theoretical concepts.
+🇺🇸 This repository is a personal collection of studies, tests, and experiments in various computing knowledge. Here you'll find code, notes, and projects that help me better understand both practical and theoretical concepts.
 
 ---
 
