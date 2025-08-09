@@ -1,4 +1,5 @@
 import asyncio
+import os
 from googletrans import Translator
 
 def dividir_texto(texto, max_chars=4500):
@@ -36,6 +37,24 @@ async def traduzir_arquivo_em_pedacos(arquivo_entrada, arquivo_saida):
 
     with open(arquivo_saida, "w", encoding="utf-8") as f:
         f.write(texto_traduzido)
-    print("Tradução finalizada com sucesso.\n\n")
+    print(f"Tradução finalizada com sucesso. Arquivo salvo em {arquivo_saida}\n\n")
+
+def solicitar_arquivo():
+    while True:
+        nome_arquivo = input("Digite o nome do arquivo (somente o nome, sem caminho): ").strip()
+        caminho_arquivo = os.path.join("conversion", nome_arquivo)
+
+        if os.path.isfile(caminho_arquivo):
+            confirmar = input(f"O arquivo '{nome_arquivo}' foi encontrado na pasta /conversion. Deseja usar este arquivo? (y/n): ").lower()
+            if confirmar == 'y':
+                return caminho_arquivo
+            else:
+                print("Vamos tentar novamente.")
+        else:
+            print(f"Arquivo '{nome_arquivo}' não encontrado na pasta /conversion. Tente novamente.")
+
 if __name__ == "__main__":
-    asyncio.run(traduzir_arquivo_em_pedacos("teste.txt", "texto_portugues.txt"))
+    arquivo_entrada = solicitar_arquivo()
+    nome_saida = os.path.basename(arquivo_entrada)
+    caminho_saida = os.path.join("final", nome_saida)
+    asyncio.run(traduzir_arquivo_em_pedacos(arquivo_entrada, caminho_saida))
