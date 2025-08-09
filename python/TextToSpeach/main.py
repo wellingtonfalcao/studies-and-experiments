@@ -5,7 +5,7 @@ import edge_tts
 async def main():
     # Abre o arquivo e lê todo o conteúdo
     print("Iniciando leitura do arquivo...")
-    with open("arquivo.txt", "r", encoding="utf-8") as f:
+    with open("teste.txt", "r", encoding="utf-8") as f:
         texto = f.read()
 
     # Cria a comunicação com o texto lido
