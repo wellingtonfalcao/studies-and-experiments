@@ -1,0 +1,31 @@
+Prefácio
+
+
+
+
+Lembro -me de quando Dave e Andy tuitaram pela primeira vez sobre a nova edição deste livro. Foi uma grande notícia. Eu assisti como a comunidade de codificação respondeu com emoção. Meu feed zumbiu com antecipação. Após vinte anos, o programador pragmático é tão relevante hoje quanto naquela época.
+
+Diz muito que um livro com essa história teve essa reação. Tive o privilégio de ler uma cópia inédita para escrever esse prefácio, e entendi por que isso criou tanta agitação. Embora seja um livro técnico, chamando -o de um desserviço. Livros técnicos geralmente intimidam. Eles estão cheios de palavras grandes, termos obscuros, exemplos complicados que, sem querer, fazer você se sentir estúpido. Quanto mais experiente o autor, mais fácil é esquecer como é aprender novos conceitos, para ser iniciante.
+
+Apesar de suas décadas de experiência em programação, Dave e Andy conquistaram o difícil desafio de escrever com a mesma emoção de pessoas que acabaram de aprender essas lições. Eles não falam com você. Eles não assumem que você é um especialista. Eles nem assumem que você leu a primeira edição. Eles levam você como você é - programadores que só querem ser melhores. Eles passam as páginas deste livro ajudando você a chegar lá, um passo acionável de cada vez.
+
+Para ser justo, eles já haviam feito isso antes. O lançamento original estava cheio de exemplos tangíveis, novas ideias e dicas práticas para construir seus músculos de codificação e desenvolver seu cérebro de codificação que ainda se aplicam hoje. Mas esta edição atualizada faz duas melhorias no livro.
+
+O primeiro é o óbvio: remove algumas das referências mais antigas, os exemplos desatualizados e os substitui por conteúdo moderno e fresco. Você não encontrará exemplos de invariantes de loop ou construir máquinas. Dave e Andy pegaram seu conteúdo poderoso e garantiram que as lições ainda vinham
+Através, livre das distrações de exemplos antigos. Ele tira as ideias antigas como seco (não se repita) e lhes dá uma nova camada de tinta, fazendo-as brilhar.
+
+Mas o segundo é o que torna esse lançamento realmente emocionante. Depois de escrever a primeira edição, eles tiveram a chance de refletir sobre o que estavam tentando dizer, o que queriam que seus leitores levassem e como isso estava sendo recebido. Eles receberam feedback sobre essas lições. Eles viram o que ficou preso, o que precisava refinar, o que foi incompreendido. Nos vinte anos em que este livro passou pelas mãos e corações dos programadores em todo o mundo, Dave e Andy estudaram essa resposta e formularam novas ideias, novos conceitos.
+
+Eles aprenderam a importância da agência e reconheceram que os desenvolvedores têm indiscutivelmente mais agência do que a maioria dos outros profissionais. Eles começam este livro com a mensagem simples, mas profunda: "É a sua vida". Isso nos lembra nosso próprio poder em nossa base de código, em nossos empregos, em nossas carreiras. Ele define o tom para todo o resto do livro - que é mais do que apenas mais um livro técnico repleto de exemplos de código.
+
+O que realmente se destaca entre as prateleiras dos livros técnicos é que ele entende o que significa ser um programador. A programação é tentar tornar o futuro menos doloroso. Trata -se de facilitar as coisas para nossos colegas de equipe. Trata -se de errar e ser capaz de se recuperar. Trata -se de formar bons hábitos. Trata -se de entender seu conjunto de ferramentas. A codificação é apenas parte do mundo de ser um programador, e este livro explora esse mundo.
+
+Passo muito tempo pensando na jornada de codificação. Eu não cresci codificando; Eu não estudei na faculdade. Não passei minha adolescência mexendo com tecnologia. Entrei no mundo da codificação em meus vinte e poucos anos e tive que aprender o que significava ser um programador. Esta comunidade é muito diferente de outras pessoas das quais fiz parte. Há uma dedicação única à aprendizagem e praticidade que é refrescante e intimidador.
+
+Para mim, realmente parece entrar em um novo mundo. Uma nova cidade, pelo menos. Eu tive que conhecer os vizinhos, escolher minha mercearia, encontrar os melhores cafeterias. Demorou um pouco para obter o Lay of the Land, para encontrar as rotas mais eficientes, para evitar as ruas com o tráfego mais pesado, para saber quando é provável que o tráfego atinasse. O tempo está diferente, eu precisava de um novo guarda -roupa.
+
+As primeiras semanas, até meses, em uma nova cidade podem ser assustadoras. Não seria maravilhoso ter um vizinho amigável e experiente que morava lá há um tempo? Quem pode fazer uma turnê, mostrar esses cafeterias? Alguém que estava lá há tempo suficiente para conhecer a cultura, entender o pulso da cidade, então você não apenas se sente em casa, mas também se torna um membro contribuinte? Dave e Andy são aqueles vizinhos.
+
+Como um recém -chegado relativo, é fácil ficar sobrecarregado não pelo ato de programação, mas pelo processo de se tornar um programador. Há uma mudança de mentalidade inteira que precisa acontecer - uma mudança de hábitos, comportamentos e expectativas. O processo de se tornar um programador melhor não acontece apenas porque você sabe como codificar; Deve ser recebido com intenção e prática deliberada. Este livro é um guia para se tornar um melhor programador com eficiência.
+
+Mas não se engane - isso não diz como a programação deve ser. Não é filosófico ou julgador dessa maneira. Ele diz, puro e simples, o que é um programador pragmático - como eles operam e como eles abordam o código. Eles deixam para você decidir se você quer ser um. Se você acha que não é para você, eles não o manterão contra você. Mas se você decidir que é, eles são seus vizinhos amigáveis, para mostrar o caminho.
