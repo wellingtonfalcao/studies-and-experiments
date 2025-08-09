@@ -1,0 +1,20 @@
+Capítulo 1
+
+Uma Filosofia Pragmática
+Este livro é sobre você.
+
+Não se engane, é a sua carreira e, mais importante, o Tópico 1, É a Sua Vida . Você é o dono dela. Você está aqui porque sabe que pode se tornar um desenvolvedor melhor e ajudar outros a se tornarem melhores também. Você pode se tornar um Programador Pragmático .
+
+O que distingue os Programadores Pragmáticos? Acreditamos que seja uma atitude, um estilo, uma filosofia de abordagem de problemas e suas soluções. Eles pensam além do problema imediato, inserindo-o em seu contexto mais amplo e buscando uma visão mais ampla. Afinal, sem esse contexto mais amplo, como ser pragmático? Como fazer concessões inteligentes e tomar decisões informadas?
+
+Outro fator-chave para o sucesso deles é que os programadores pragmáticos assumem a responsabilidade por tudo o que fazem, algo que discutimos no Tópico 2, O Gato Comeu Meu Código-Fonte . Sendo responsáveis, os programadores pragmáticos não ficam parados assistindo seus projetos ruírem por negligência. No Tópico 3, Entropia de Software , mostramos como manter seus projetos impecáveis.
+
+A maioria das pessoas acha a mudança difícil, às vezes por bons motivos, às vezes por pura e simples inércia. No Tópico 4, Sopa de Pedra , examinamos uma estratégia para instigar a mudança e (em nome do equilíbrio) apresentamos a história de advertência de um anfíbio que ignorou os perigos da mudança gradual.
+
+Um dos benefícios de entender o contexto em que você trabalha é que fica mais fácil saber o quão bom seu software precisa ser. Às vezes, quase a perfeição é a única opção, mas muitas vezes há compensações envolvidas. Exploramos isso no Tópico 5, Software Suficientemente Bom .
+
+Claro, você precisa ter uma ampla base de conhecimento e experiência para realizar tudo isso. Aprender é um processo contínuo e constante. No Tópico 6, Seu Portfólio de Conhecimento , discutimos algumas estratégias para manter o ritmo.
+
+Por fim, ninguém trabalha no vácuo. Todos nós passamos muito tempo interagindo com outras pessoas. O Tópico 7, Comunicar-se !, lista maneiras de fazer isso melhor.
+
+A programação pragmática deriva de uma filosofia de pensamento pragmático. Este capítulo estabelece as bases para essa filosofia.
