@@ -1,0 +1,345 @@
+Capítulo 1
+
+O básico do scrum
+Neste capítulo
+
+Bullet vendo princípios de scrum essenciais
+
+Bala identificando valores e estrutura de scrum
+
+O Scrum é uma estrutura de exposição baseada no empirismo, o que significa que as pessoas que empregam a estrutura scrum ganham conhecimento da experiência da vida real e tomam decisões com base nessa experiência. É uma maneira de organizar seu trabalho-liberando um novo smartphone, coordenando a festa de aniversário da quinta série de sua filha ou expondo se sua abordagem está gerando resultados pretendidos. Se você precisar fazer algo, o Scrum fornece uma estrutura para maior eficiência e resultados mais eficazes.
+
+No Scrum, o senso comum reina. Você se concentra no que pode ser feito hoje com o objetivo de quebrar o trabalho futuro em peças gerenciáveis. Você pode ver imediatamente como seu esforço está funcionando e, quando você encontra ineficiências em sua abordagem, o Scrum permite que você aja com eles fazendo ajustes com clareza e velocidade.
+
+Embora os controles empíricos do processo voltem ao início dos tempos nas artes, seu uso moderno decorre da modelagem de computadores. Por exemplo, na escultura, você faz uma cinzel, verifica os resultados, faz com que as adaptações necessárias e esculpirem um pouco mais. O modelo de exposição empírica significa observar ou experimentar resultados reais, em vez de simular -os com base na pesquisa ou em uma fórmula matemática e depois tomar decisões com base nessas experiências. No Scrum, você divide seu trabalho em pedaços acionáveis, observando seus resultados a cada passo do caminho. Essa abordagem permite que você faça as alterações necessárias para permanecer no caminho certo.
+
+O básico dos olhos do pássaro
+Scrum não é uma metodologia; É uma nova maneira de pensar. Não é uma abordagem de pintura por números na qual você acaba com um produto ou resultado; É uma estrutura simples para definir claramente as responsabilidades e organizar seu trabalho acionável, para que você seja mais eficaz na priorização e mais eficiente na conclusão do trabalho selecionado. As estruturas são menos prescritivas que as metodologias e fornecem flexibilidade adequada para os processos, estruturas e ferramentas que as complementam. Quando essa abordagem é usada, você pode observar e adotar claramente métodos e práticas complementares e determinar rapidamente se está fazendo um progresso real e tangível. Você cria resultados utilizáveis dentro de semanas, dias ou (em alguns casos) horas.
+
+Como o processo de construção de um tijolo doméstico por tijolo, o scrum é uma abordagem iterativa e incremental. Ele fornece evidências empíricas precoces de desempenho e qualidade. As funções são distintas e auto-governamentais, e indivíduos e equipes recebem a autonomia e as ferramentas necessárias para realizar o trabalho. Relatórios de progresso longos, reuniões redundantes e camadas de gerenciamento inchadas são inexistentes. Scrum é a abordagem a ser usada se você deseja fazer o trabalho.
+
+TechnicalStuffscrum é um termo que vem do jogo de rugby. Afastos, ou scrums, são formados com os atacantes de um lado, interligando os braços com a cabeça para baixo e empurrando contra os atacantes da equipe adversária, que também estão entrelaçados com as cabeças para baixo. A bola é então jogada no meio deste grupo de atletas firmemente condensados. Embora cada membro da equipe desempenhe uma posição única, todos os membros da equipe desempenham papéis de ataque e defesa e trabalham juntos para mover a bola pelo campo do jogo. Como o rugby, Scrum depende de pessoas talentosas com diferentes responsabilidades e domínios trabalhando juntos em equipes em direção a um objetivo comum.
+
+Queremos enfatizar-e escrevemos dois terços deste livro sobre-um conceito esquecido de scrum: sua incrível versatilidade. As pessoas que sabem sobre o Scrum geralmente pensam que é personalizado para software, tecnologia da informação (TI) ou uso de tecnologia, mas essa é apenas a ponta do iceberg. As aplicações para o uso do scrum podem ser encontradas em todos os lugares, incluindo uso grande, pequeno, tecnológico, artístico, social e até pessoal. Nos capítulos 8 a 18, mostramos como. Seja avisado! O Scrum é uma estrutura tão viciante que você o usará para treinar o time de futebol do seu filho, planejar seu relógio de vizinhança e até aumentar sua rotina de exercícios.
+
+Roteiro para valor
+Ao longo deste livro, discutimos técnicas que alguns profissionais de scrum especializados se aplicam como extensões de prática comum ao Scrum. Essas técnicas complementam, não substituem a estrutura do scrum. Apontamos as diferenças quando elas ocorrem. Todas as práticas comuns que incluímos e recomendamos são testadas e testadas - sempre com um entendimento claro que essas práticas são
+Fora da estrutura básica do scrum e são sugeridos para consideração em suas próprias situações.
+
+Chamamos isso de agregação de scrum e examinamos práticas comuns de "roteiro para valorizar". Este roteiro consiste em sete elementos que o orientam no objetivo do seu produto até o nível da tarefa e voltam a voltar em um processo contínuo, iterativo e incremental de inspeção e adaptação. Em outras palavras, o roteiro para valorizar ajuda a ver o que deseja alcançar e interromper progressivamente esse objetivo em pedaços através de um ciclo iterativo que leva a resultados reais todos os dias, semana e mês.
+
+Você sabe aquela ideia de bilhões de dólares que está à espreita na parte de trás da sua cabeça há anos? Siga o roteiro para valorizar. Ele mostrará a viabilidade ou falácia de sua ideia e onde fazer suas melhorias - passo a passo, peça por peça.
+
+A Figura 1-1 mostra uma visão holística do roteiro em valor. Esta figura mostra que você começa com o objetivo do produto; trabalhar através do planejamento; e depois entre no mundo cíclico de sprints, críticas e retrospectivas.
+
+Ilustração esquemática do roteiro para valorizar.
+Figura 1-1: o roteiro do valor.
+
+Visão geral do scrum
+O processo scrum é simples e circular, com elementos constantes e transparentes de inspeção e adaptação. Primeiro, uma lista de tarefas deliberadamente ordenada-chamada de backlog de produtos-é criada e mantida. Em seguida, os itens de prioridade são selecionados por um período fixo e regular-chamado de sprint-durante o qual a equipe do Scrum se esforça para uma meta predeterminada e mutuamente acordada no sprint.
+
+A Figura 1-2 mostra uma visão geral do scrum.
+
+Ilustração esquemática de uma visão geral simplificada dos eventos e ciclos de scrum.
+Figura 1-2: Uma visão geral simplificada dos eventos e ciclos do scrum.
+
+O processo scrum permite que você se adapte rapidamente às mudanças nas forças do mercado, restrições tecnológicas, regulamentos, novas inovações, preferências familiares e quase tudo o que você possa imaginar. A chave é o processo contínuo de trabalhar nos itens de maior prioridade até a conclusão. Cada um dos itens de maior prioridade é totalmente desenvolvido e testado pelas seguintes etapas:
+
+Requisito elaboração
+Projeto
+Desenvolvimento
+Testes abrangentes
+Integração
+Documentação
+Aprovação
+Lembre -se de que as sete etapas para construir completamente o escopo de cada requisito são executadas para cada item. Todo requisito obtido durante um sprint, não importa quão pequeno ou grande seja totalmente construído, testado e aprovado ou rejeitado. Quando um item de atraso é aprovado e considerado "liberável", você sabe que ele funciona. Esperança e adivinhação são retiradas da equação e substituídas pela realidade. Você mostra esses resultados tangíveis às partes interessadas em busca de feedback. Esse feedback gera novos itens que são colocados no backlog do produto e priorizados contra trabalhos conhecidos existentes.
+
+Dica o que é mais importante: eficiência ou eficácia? Sem dúvida, é eficácia - trabalhando na coisa certa na hora certa. Não se preocupe com a eficiência até descobrir como ser eficaz. Uma equipe muito eficiente que trabalha nas coisas erradas é uma perda de tempo. Uma equipe super eficaz, no entanto, pode facilmente aprender eficiência. Sempre trabalhe nas coisas certas primeiro. Como disse Peter F. Drucker de economista e gerenciamento, "não há nada tão inútil como fazer com eficiência o que não deve ser feito".
+
+O ciclo Scrum é executado repetidamente. O fluxo constante de feedback e ênfase no desenvolvimento de apenas os itens de maior prioridade ajuda a refletir o que seus clientes estão procurando, entregá-los a eles mais rapidamente e entregá-lo com maior qualidade.
+
+Equipes de scrum
+Não importa qual seja o escopo do seu produto, sua equipe de scrum terá características semelhantes. Os tamanhos das equipes variam um pouco, mas os papéis ou responsabilidades permanecem os mesmos. Discutimos as responsabilidades específicas em detalhes ao longo deste livro. A Figura 1-3 mostra uma equipe de scrum.
+
+A ilustração esquemática de uma equipe Scrum tem os desenvolvedores em sua essência.
+Figura 1-3: Uma equipe do Scrum tem os desenvolvedores em sua essência.
+
+Os desenvolvedores são o coração de uma equipe Scrum - as pessoas que trabalham juntas para criar o produto, serviço ou solução em si. Eles trabalham diretamente com o proprietário de um produto e o mestre de scrum, que alinham as prioridades de negócios e desenvolvimento da organização e eliminam as distrações para que os desenvolvedores possam se concentrar no "desenvolvimento" de um resultado de qualidade.
+
+Lembre -se de que não se apega ao termo "desenvolvedor", pensando que se refere ao desenvolvimento de software. Os desenvolvedores de uma equipe de scrum são simplesmente as pessoas com as habilidades necessárias para ter uma ideia e
+"Desenvolva" em algo de valor para o cliente. Alguém que escreve código de software é apenas um exemplo de desenvolvedor de scrum. Existem muitas outras habilidades que um desenvolvedor em uma equipe de scrum pode possuir, como testes, escrever, configurar, moldar, depilar, ensinar, projetar e assim por diante. A palavra "desenvolvedor" é usada ao longo deste livro para simplificar, não excluir.
+
+As partes interessadas não são funções de scrum, mas as incluímos na Figura 1-3 porque afetam seu produto, serviço ou solução. As partes interessadas podem ser internas ou externas. Os membros da equipe de marketing, legal, conformidade, sogros e, especialmente, usuários e clientes são exemplos de partes interessadas.
+
+A própria equipe do Scrum tem a maior responsabilidade. Os membros da equipe se auto-gerenciam para descobrir como alcançar seus objetivos no ambiente em que se encontram.
+
+Governança
+O Scrum possui três contas que são iguais em status, mas separadas e independentes em função:
+
+Proprietário do produto: o porquê, o quê e quando (não quanto)
+Desenvolvedores: como e quanto
+Scrum Master: a melhoria e o ambiente para o sucesso
+Cada função tem um objetivo definido diretamente projetado para aprimorar a produtividade da equipe.
+
+Os criadores do Scrum não conceberam essas responsabilidades por acaso, mas através de anos de experiência em trabalhar com todos os tipos de equipes. Eles viram combinações boas, ruins e feias e descobriram que os melhores resultados vieram dessas três contas.
+
+Dica, preferimos que cada pessoa em uma equipe de scrum seja um participante em tempo integral dedicado exclusivamente aos objetivos da equipe Scrum. Não debate os membros da sua equipe em várias prioridades ou use jogadores de meio período. Quantos times profissionais de futebol têm jogadores de meio período ou aqueles que jogam em vários times? Nenhum.
+
+Lembre -se de Scrum, nenhuma pessoa está acima de outra. Todo mundo é um colega; Ninguém é um chefe ou subestimado para ninguém da equipe. Nós somos a palavra operacional, em vez de eu. As equipes de scrum prosperam em segurança psicológica, vulnerabilidade e confiança-os principais atributos dos membros da equipe em nível de pares.
+
+Estrutura scrum
+O Scrum é uma estrutura que fornece clareza de responsabilidades por meio de papéis, visibilidade por meio de artefatos e oportunidades de inspeção e adaptação por meio de eventos. Dentro dessa estrutura, o Scrum é um contêiner para outras práticas, processos e ferramentas apropriadas para atender às necessidades específicas de uma equipe, organização, produto ou serviço.
+
+Lembre -se de que Scrum tem:
+
+Cinco valores
+Três contas
+Três artefatos
+Cinco eventos
+Cada elemento da estrutura se encaixa no processo scrum, que é iterativo e incremental. Você cria e aprimora seu produto de forma incremental e melhora de forma incremental seu processo e ambiente com essa estrutura simples, como segue:
+
+Valores
+Compromisso
+Foco
+Abertura
+Respeito
+Coragem
+Contas
+Proprietário do produto
+Desenvolvedores
+Scrum Master
+Artefatos
+Backlog do produto
+Sprint backlog
+Incremento
+Eventos
+Corrida
+Planejamento de sprint
+Scrum diário
+Sprint Review
+Sprint retrospectiva
+Technicalstuff no mundo scrum, artefatos são listas de trabalho a serem realizadas ou produtos de trabalho que foram realizados e são considerados valiosos e utilizáveis. Ao contrário dos artefatos arqueológicos, os artefatos scrum não são colocados em pedra. As equipes do Scrum inspecionam e avaliam continuamente os artefatos para garantir que estejam cavando na direção certa.
+
+A implementação bem -sucedida da estrutura Scrum depende da capacidade das pessoas de adotar os cinco valores de scrum em sua cultura e pensamento. A nova maneira de trabalhar precisa mudar os hábitos diários de equipes e indivíduos.
+
+Cada função, artefato e evento no scrum tem um objetivo definido. Você coloca seu trabalho na estrutura Scrum, passando pelo roteiro para valorizar (discutido anteriormente neste capítulo), mas as ferramentas e técnicas reais para atingir seus objetivos são seus. Scrum não diz a você como alcançar seu objetivo; Ele apenas fornece uma estrutura na qual você pode ver claramente o que está fazendo.
+
+Lembre -se de que o Scrum é uma estrutura empírica de controle de processos. Na verdade, é agnóstico do processo; Ele não informa os processos a serem usados para criar seus resultados.
+
+Scrum é simples, mas não é fácil. Scrum é como entrar em forma fisicamente. No conceito, você precisa se exercitar mais e apreciar menos calorias; Na prática, o processo pode ser complexo.
+
+A seguir, estão algumas práticas comuns que complementam o scrum e produziram sucessos incríveis. (Os elementos extras são mostrados em itálico.) Aqui, expandimos a estrutura do Scrum com práticas recomendadas:
+
+Contas
+Produto
+proprietário
+Desenvolvedores
+Scrum Master
+Partes interessadas
+Scrum Mentor
+Artefatos
+Objetivo do produto
+Roteiro de produtos
+Backlog do produto
+Plano de liberação
+Sprint backlog
+Incremento do produto
+Eventos
+Planejamento de produtos
+Planejamento de liberação
+Corrida
+Planejamento de sprint
+Scrum diário
+Sprint Review
+Sprint retrospectiva
+A estrutura ainda é simples, mas com funções, artefatos e eventos adicionais projetados para suavizar o processo. Ao longo do livro, discutimos esses papéis, artefatos e eventos.
+
+As origens de Scrum
+Embora tenha havido quase 100 anos de construção em direção às estruturas ágeis que usamos hoje, a primeira equipe de Scrum foi criada por Jeff Sutherland em 1993, depois que ele aplicou os conceitos descritos em um artigo de revisão de negócios de Harvard de 1986 intitulado "O novo jogo de desenvolvimento de produtos". Com o co-criador da Scrum, Ken Schwaber, Jeff formalizou a estrutura do Scrum em Oopsla '95 (Conferência Internacional sobre Programação, Sistemas, Línguas e Aplicações Orientadas a Objetos).
+
+O banquete de feedback
+Uma clara vantagem do Scrum sobre outras estruturas é o loop de feedback, que informa cedo e continuamente o que está funcionando, o que não está funcionando, o que está faltando e o que é extraordinário.
+
+O feedback é gerado regularmente a partir de membros da equipe, partes interessadas e clientes. O processo vai algo assim:
+
+Os desenvolvedores recebem feedback diário à medida que constroem seu produto ou serviço.
+A interação diária direta ocorre entre o proprietário do produto e os desenvolvedores para obter respostas e feedback no local.
+O proprietário do produto fornece feedback direto à medida que aceita ou rejeita todos os itens de atraso concluídos.
+No final de cada sprint, as partes interessadas internas fornecem feedback.
+No final de cada lançamento, o feedback é fornecido pelo mercado externo.
+Você obtém mais do modelo Scrum do que os modelos tradicionais de gerenciamento de projetos, porque o Scrum enfatiza os resultados, em vez do desenvolvimento de artefatos, fornecendo produtos tangíveis e validados, em vez de tomos de relatórios sobre o que é possível. Você recebe feedback regular ao longo do caminho, permitindo que você consiga o seu produto ou serviço o mais rápido possível.
+
+No final, você não fica se perguntando se produziu o que seus clientes desejam; Você está se comunicando e recebendo feedback deles o tempo todo. O processo de inspeção e adaptação está em funcionamento em seu nome e você está entregando o que seus clientes realmente pediram.
+
+Raízes ágeis
+Para entender o Scrum, ajuda a mergulhar no mundo mais amplo das técnicas ágeis, porque o Scrum é uma das muitas abordagens com características comuns de agilidade.
+
+O Agile é um descritor de abordagens alinhadas com os valores do manifesto ágil e os 12 princípios ágeis, que descrevemos nesta seção. Scrum é uma abordagem ágil.
+
+Dica para uma análise completa das técnicas ágeis, consulte Gerenciamento de projetos ágeis para manequins, terceira edição, de Mark Layton, Steve Ostermiller e Dean Kynaston (John Wiley & Sons, Inc.).
+
+Três pilares de melhoria
+O modelo de controle de processos empíricos fica com segurança em três pilares, comuns a técnicas ágeis, incluindo Scrum:
+
+Transparência
+Inspeção
+Adaptação
+Transparência
+Uma característica distintiva das técnicas ágeis, em geral, e Scrum, em particular, é a transparência. Quando os canais de comunicação são claros e acessíveis, as informações são irradiadas amplamente. Todos os envolvidos sabem o que foi feito, o que está sendo trabalhado, o que resta a funcionar e quaisquer impedimentos bloqueando o caminho. Desde o início, você produz resultados reais que são validados e aprovados ou enviados de volta para ajustes. Agora, o tempo de atraso entre a data de início e os resultados utilizáveis é de dias e não meses.
+
+A transparência não se trata apenas de ver resultados rapidamente. Todo mundo precisa examinar a mesma lente. Uma estrutura (como Scrum) é compartilhada, juntamente com uma definição acordada de feito. Observadores e participantes podem ver o que está sendo realizado e interpretar os resultados em um idioma comum.
+
+Inspeção
+Como você descobre nos capítulos seguintes, os objetivos e os resultados são divididos nos menores pedaços acionáveis possíveis (itens de atraso do produto comumente capturados como histórias de usuários; consulte o Capítulo 3). As metas são definidas dentro de iterações de comprimento fixo chamadas sprints. Como cada item é realizado, é inspecionado para garantir que ele funcione e faça o que o cliente deseja.
+
+Essas inspeções são feitas por pessoas mais próximas do trabalho - aqueles que fazem o trabalho e aqueles que representam o cliente. Este processo elimina o atraso de tempo necessário para que uma pessoa externa conclua esta tarefa,
+E isso também significa que quaisquer ajustes podem ser feitos rapidamente porque o conhecimento necessário está próximo.
+
+Adaptação
+Se a inspeção mostrar imprecisões e/ou ineficiências - ou seja, se o recurso ou os resultados desejados não funcionarem corretamente - precisará ser feita uma adaptação. A adaptação deve ser feita o mais rápido possível e antes de passar para o próximo item acionável na lista de tarefas. Em outras palavras, quando você segue em frente, sabe tudo atrás de você está funcionando corretamente.
+
+O SCRUM permite que as inspeções e adaptações sejam realizadas imediatamente nos níveis de equipe e produto ou serviço por meio de revisões de sprint, retrospectivas de sprint e o Daily Scrum (ver os capítulos 6 e 7).
+
+Um manifesto ágil
+O Scrum é uma estrutura, não uma metodologia por números. Você ainda precisa pensar e fazer escolhas. Parte do benefício da estrutura do scrum é que ela é intencionalmente incompleta. Ele permite que você tome as melhores decisões com base na realidade em que você se encontra.
+
+Em 2001, 17 especialistas em software e projeto concordaram com os quatro valores que seus experimentos e abordagens tinham em comum. Esses valores são conhecidos como manifesto para o desenvolvimento de software ágil (comumente chamado de manifesto ágil):
+
+Estamos descobrindo melhores maneiras de desenvolver software, fazendo isso e ajudando os outros a fazer isso. Através deste trabalho, chegamos a valorizar:
+
+Indivíduos e interações mais do que processos e ferramentas
+Software de trabalho mais do que documentação abrangente
+Colaboração de clientes mais do que negociação de contrato
+Respondendo à mudança mais do que seguir um plano
+Ou seja, embora haja valor nos itens à direita, valorizamos mais os itens à esquerda.
+
+Manifesto Agile © 2001: Kent Beck, Mike Beedle, Arie Van Bennekum, Alistair Cockburn, Ward Cunningham, Martin Fowler, James Grenning, Jim Highsmith, Andrew Hunt, Ron Jeffries, Jon Kern, Brian Marick, Robert C.
+
+Embora o manifesto e os princípios ágeis tenham sido escritos por e para especialistas em software, os valores permanecem válidos para qualquer projeto scrum que você embarque. Por exemplo, o sistema de posicionamento global (GPS) foi projetado por e para os militares, mas isso não significa que você não pode se beneficiar quando dirige para uma nova parte da cidade.
+
+Dica para obter mais informações sobre o Manifesto Agile e seus autores, visite http://agilemanifesto.org.
+
+Doze princípios ágeis
+Os autores do Agile Manifesto também concordaram em 12 princípios ágeis. Você pode usar esses princípios para garantir que sua abordagem seja fiel a valores ágeis:
+
+Nossa maior prioridade é satisfazer o cliente através da entrega precoce e contínua de software valioso.
+Bem -vindo a alterar requisitos, mesmo no final do desenvolvimento. Processos ágeis A mudança de arreios para a vantagem competitiva do cliente.
+Entregue o software de trabalho com frequência, de algumas semanas a alguns meses, com preferência por uma escala de tempo mais curta.
+Os empresários e os desenvolvedores devem trabalhar juntos diariamente ao longo do projeto.
+Construir projetos em torno de indivíduos motivados. Dê a eles o meio ambiente e o apoio de que precisam e confie neles para fazer o trabalho.
+A conversa cara a cara é o método mais eficiente e eficaz de transmitir informações e dentro de uma equipe de desenvolvimento.
+O software de trabalho é a principal medida de progresso.
+Processos ágeis promovem o desenvolvimento sustentável. Os patrocinadores, desenvolvedores e usuários devem poder manter um ritmo constante indefinidamente.
+A atenção contínua à excelência técnica e ao bom design aumenta a agilidade.
+A simplicidade - a arte de maximizar a quantidade de trabalho não realizada - é essencial.
+As melhores arquiteturas, requisitos e designs emergem de equipes auto-organizadas.
+Em intervalos regulares, a equipe reflete sobre como se tornar mais eficaz e depois sintoniza e ajusta seu comportamento de acordo.
+Lembre -se de que os princípios não mudam, mas as ferramentas e técnicas para alcançá -las podem. Enquanto alguns princípios referem explicitamente o desenvolvimento de software, seu aplicativo é muito mais amplo. Tente substituir a palavra "software" por outras palavras relevantes para o seu contexto, como "produto", "solução", "funcionalidade" e assim por diante.
+
+Alguns dos princípios são mais fáceis de implementar do que outros. Considere o princípio 2. Talvez algumas partes da sua empresa (ou grupo ou família) estejam abertas a mudanças e novas idéias. Para eles, o Scrum é natural e eles estão prontos para começar. Mas outras partes podem ser mais resistentes à mudança.
+
+Ou considere o princípio 6. Trabalhar cara a cara pode não ser possível. Com a Internet, o
+Pandemia e a globalização das forças de trabalho, você pode ter membros da equipe de Mumbai a Moscou e Miami. Você pode considerar várias soluções de videoconferência, mas nenhuma dessas soluções atende à intenção do princípio 6, e nenhuma é tão boa quanto a comunicação cara a cara. Independentemente disso, você pode realmente descobrir que apenas o Scrum permite maximizar seus resultados, mesmo com uma equipe distribuída.
+
+Seu trabalho deve ter desafios únicos. Não deixe que um soluço ou um cenário menos do que perfeito o pare de frio ou faça com que seu trabalho manta. Parte da diversão de usar o Scrum está trabalhando em questões para obter resultados. Fique com os 12 princípios, e sua equipe obterá resultados de qualidade rapidamente.
+
+O desafio de Marshmallow
+Em 2010, o autor e o presidente Tom Wujec deu uma notável palestra de TED chamada Marshmallow Challenge, que discutiu um exercício de design criado pelo designer Peter Skillman. Neste exercício, pequenos grupos de participantes recebem 18 minutos para construir uma estrutura independente o mais alto possível usando ferramentas estranhas e mínimas: 20 paus de espaguete, um metro de fita, um metro de corda e um marshmallow. Wujec começou a fazer esse teste e estudar os resultados. A maioria dos grupos lutou para criar algo alto ou confiável. Os membros do grupo discutiram opções, planejaram um design final e o reuniram, apenas para descobrir que a estrutura não permaneceria porque eles deixaram de fora um aspecto crucial.
+
+Os grupos que tiveram o pior foram os recém -formados de escolas de negócios. Os grupos que tiveram os melhores foram os jardins de infância, que consistentemente produziram estruturas mais altas e mais criativas.
+
+Wujec disse que, quando os estudantes de negócios trabalham em uma idéia, eles acreditam que apenas uma solução "correta" existe, então passam muito tempo contemplando e planejando essa abordagem. As crianças, no entanto, começaram brincando com as ferramentas. Eles aprenderam o que não funcionou e mudaram; Então, eles descobriram o que funcionou e o mantiveram. Em outras palavras, eles construíram protótipos o tempo todo.
+
+Um argumento no contexto do scrum é que o estado natural dos seres humanos é inspeção e adaptação. Queremos fazer essas coisas, mas em algum lugar ao longo do caminho, somos treinados delas. Ensinamos que planejar e criar uma solução é a maneira correta de fazer as coisas. Mas os jardins de infância nos lembram que essa maneira de pensar pode estar errada.
+
+Três princípios de platina
+Na Platinum Edge, nossa empresa de consultoria e treinamento, trabalhamos com organizações ágeis e equipes de scrum há mais de duas décadas e consultamos dezenas de empresas, empresas e organizações sem fins lucrativos. Sabemos o desempenho dos seguintes "princípios da platina" porque vimos o valor deles enquanto ajudamos na implementação deles.
+
+Aqui estão três princípios de platina que melhoraram consistentemente o desempenho das equipes que ajudamos:
+
+Resistir à formalidade
+Pense e age como uma equipe
+Visualize em vez de escrever
+Esses princípios podem ser aplicados a qualquer trabalho, não apenas ao desenvolvimento de software. Parte da beleza das técnicas ágeis é que você pode usá -las para qualquer coisa.
+
+Resistir à formalidade
+Você já viu uma apresentação nocaute e se perguntou quanto tempo alguém passou montando isso? Nem pense em fazer isso com Scrum. Você pode rabiscá -lo em um gráfico de flip, enfiá -lo em uma parede onde as pessoas o olharão e depois voltarão a criar valor. Se for necessária discussão, vá até as partes em questão (ou pelo menos gire um rápido bate -papo por vídeo) e tenha a discussão. Cada iteração do processo de design leva muito pouco tempo para visualizar. Concentre seu valioso tempo e esforço em alcançar os objetivos, em vez de apresentações estilizadas.
+
+O Technicalstuff Pageanry é muitas vezes confundido com profissionalismo e progresso. Com o Scrum, você é incentivado a se comunicar imediatamente, direta e informalmente sempre que tiver uma pergunta e trabalhar em estreita colaboração com os membros da sua equipe para aumentar a eficiência e economizar tempo.
+
+Evite essas armadilhas improdutivas:
+
+Apresentações extravagantes e demoradas
+Reuniões longas e/ou sem foco
+Tomes de documentação
+Esforço excessivo justificando o progresso
+Enfatize esses construtores de produtividade:
+
+Ser quase suficiente. Em todas as coisas, o trabalho deve ser quase suficiente para atingir o objetivo. (Não confunda suficiência com a mediocridade. O suficiente é suficiente; mais é um desperdício e os problemas geralmente surgem nesse inchaço. Veja o Princípio Agile 10 no início deste capítulo.)
+Comunique -se frequentemente com todas as partes para reduzir a necessidade de extensas atualizações.
+Comunique -se de maneira simples e
+diretamente. Se você pode falar com alguém cara a cara, faça -o.
+Descubra a maneira mais simples de obter o que você precisa, sempre com o objetivo de oferecer a mais alta qualidade.
+
+Dica em pouco tempo, seu esforço conjunto evoluirá uma cultura ágil. À medida que as pessoas se educam no processo e veem os resultados aprimorados, sua adesão por ser quase suficiente aumentará. Portanto, tenha qualquer reação inicial com educação, paciência e consistência.
+
+Pense e age como uma equipe
+O coração do Scrum está funcionando em equipe, que pode ser um desafio para as culturas corporativas tradicionais, onde as contribuições individuais são mais valorizadas. Em Scrum, os resultados sobrevivem ou morrem no nível da equipe. O uso do talento de cada indivíduo em uma equipe faz com que o trabalho da média seja o hiperprodutivo. Como Aristóteles disse: "O todo é maior que a soma de suas partes".
+
+Como você cria essa cultura de equipe? A estrutura Scrum em si enfatiza o trabalho em equipe. Espaço físico, objetivos comuns e propriedade coletiva gritam "equipe". Adicione as seguintes práticas à sua estrutura Scrum:
+
+Elimine os títulos de trabalho. Ninguém possui áreas de desenvolvimento; Os membros da equipe agregam valor por meio de suas habilidades e colaboração. Queremos liderança situacional e informal impulsionada pela experiência.
+Emparelhar os membros da equipe para aprimorar a garantia de qualidade entre multifuncionalidade e carga frontal.
+Sempre relate as métricas da equipe, não as métricas individuais ou de emparelhamento.
+Visualize em vez de escrever
+No geral, as pessoas são visuais; Eles pensam pictoralmente e lembram -se pictoralmente. A maioria das crianças gosta de fotos - ilustrações visuais de texto. Os adultos não são diferentes. É provável que comecemos a ler um artigo longo, lançando ou percorrendo suas imagens e gráficos e depois lendo mais sobre o que despertou nosso interesse.
+
+Imagens, diagramas e gráficos retransmitem as informações instantaneamente. Os relatórios escritos exigem a adesão do leitor, que cai à medida que os relatórios crescem.
+
+O Technicalstuff Twitter estava interessado em estudar a eficácia de tweets com fotos versus apenas aquelas que eram apenas texto. Ele conduziu um estudo usando o Shift Media Manager e teve alguns resultados interessantes. Os usuários se envolveram cinco vezes mais frequentemente quando os tweets incluíam fotos em oposição aos tweets somente de texto. E a taxa de retweets e respostas com fotos foi dobrada. No entanto, o custo por engajamento de tweets de fotos foi metade do dos tweets somente de texto (SHIFLE NEQUANTE, 17 de janeiro de 2014).
+
+Quando possível, incentive sua equipe a apresentar informações visualmente, mesmo que isso signifique esboçar um diagrama em um quadro branco ou virtual. Se alguém não entende o diagrama, pode perguntar sobre isso. A discussão proveniente de perguntas também é geralmente valiosa. As alterações podem ser feitas ali e, em seguida, gráficos, gráficos e modelos simples estão ao seu alcance.
+
+Os cinco valores de scrum
+A Scrum é fundada em cinco valores que cada membro da equipe usa para orientar sua tomada de decisão:
+
+Compromisso
+Foco
+Abertura
+Respeito
+Coragem
+Esses valores não são ciência do foguete. Em vez disso, eles se enquadram nessa categoria familiar de senso comum. No entanto, eles são críticos para a implementação bem -sucedida do Scrum, então merecem discussões aqui.
+
+Nas seções a seguir, analisamos cada um desses valores mais de perto para mostrar o quão vital eles são dentro do scrum.
+
+Compromisso
+Os membros da equipe da Scrum devem estar comprometidos com o sucesso e entre si. Eles devem estar dispostos a criar objetivos realistas e cumpri -los. Todos devem participar. Scrum é uma situação "all-in" na qual todos fazem parte de uma equipe e trabalham juntos para cumprir os compromissos da equipe. Felizmente, o modelo Scrum garante que você tenha autoridade e liberdade para fazer exatamente isso.
+
+No centro do Scrum está um evento de sprint, que cobrimos no capítulo 5. Um sprint requer metas claras definidas dentro de caixas de tempo fixo. Nesse modelo, você divide esses objetivos nos menores pedaços de trabalho possível, para saber o que está se metendo. Você sabe o que é realista, para que você possa definir metas apropriadas e cumprir seus compromissos.
+
+Foco
+Parte da magia do scrum é que ele foi construído em torno do conceito de foco. Concentre -se em algumas coisas de cada vez e faça -as bem. Você terá um papel claro e objetivos claros dentro desse papel. Seu trabalho é usar sua função para contribuir para alcançar a meta. Todos os dias, os membros da equipe sabem no que se concentrar naquele dia para ter sucesso, o que é libertador.
+
+Você fez seus objetivos e compromissos mais cedo. Concentre -se nesses objetivos e nada mais.
+
+Abertura
+Tudo com o seu trabalho e o trabalho de todos os outros é transparente e está disponível para inspeção e melhoria. O
+Objetivos, desafios e progresso de qualquer pessoa envolvida-você, seu chefe, seus funcionários, seus sogros-são abertos e visíveis. Longe vão os dias das surpresas de seis meses na estrada.
+
+Felizmente, a base do scrum são os pilares ágeis do empirismo: transparência, inspeção e adaptação. Os radiadores de informação (gráficos grandes e visíveis) e a inteligência em tempo real permitem uma ação irrestrita. A maioria das pessoas não está acostumada a esse nível de exposição. Mas depois de pegar em sua organização, eles não terão as coisas de outra maneira.
+
+Respeito
+Cada membro da equipe é selecionado para seus pontos fortes. Como resultado, as equipes do Scrum são diversas - diversas personalidades, origens, conjuntos de habilidades e perspectivas. Cada um é vital para o sucesso. Junto com esses pontos fortes, surgem fraquezas e oportunidades de aprender e crescer. A regra de ouro dentro do Scrum é que cada participante deve respeitar todos os outros. Eles se respeitam como pessoas capazes e independentes e são respeitadas como tal pelas pessoas com quem trabalham.
+
+A harmonia é criada sincronizando papéis e habilidades, o que cria um ritmo de desenvolvimento à medida que o trabalho avança. Se uma pessoa estiver desgastada por um tempo, é do seu interesse ajudar essa pessoa porque todos os membros da equipe são responsabilizados como equipe.
+
+As pessoas querem fazer um bom trabalho; Está em nossa fiação. Se você buscar o positivo, encontrará o positivo. Da mesma forma, se você buscar o negativo, encontrará o negativo. O respeito é a brasa ardente da positividade.
+
+Coragem
+Scrum é sobre assumir riscos. É sobre entrar na escuridão desconhecida. Toda ideia que você tem será desafiada em um modelo Scrum. Nenhum procedimento é justificado porque você sempre fez as coisas de uma certa maneira. Diga adeus aos procedimentos que você fez pelo hábito e diga olá a um processo que se baseou no que a equipe acha que é bem -sucedido. Os membros da equipe da Scrum têm a coragem de fazer a coisa certa, desafiar o status quo, trabalhar em problemas difíceis e inovar maneiras de resolvê -los. O filósofo Jacob Bronowski poderia estar falando sobre o modelo de scrum em seu livro A ascensão do homem quando ele disse
+
+É importante que os alunos tragam uma certa irreverência de ragamuffin, com os pés descalços para seus estudos; Eles não estão aqui para adorar o que se sabe, mas para questioná -lo.
+
+Os feudos serão desafiados. As regras serão testadas. Rotinas serão quebradas. Melhorias acontecerão. A mudança pode ser difícil. A mudança exige coragem. É preciso coragem para se comprometer, focar, ser aberto e mostrar e ser digno de respeito - para abraçar todos os valores do Scrum.
+
+Scrum exige coragem.

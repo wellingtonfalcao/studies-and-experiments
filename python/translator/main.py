@@ -42,19 +42,19 @@ async def traduzir_arquivo_em_pedacos(arquivo_entrada, arquivo_saida):
 def solicitar_arquivo():
     while True:
         nome_arquivo = input("Digite o nome do arquivo (somente o nome, sem caminho): ").strip()
-        caminho_arquivo = os.path.join("conversion", nome_arquivo)
+        caminho_arquivo = os.path.join("to-convert", nome_arquivo)
 
         if os.path.isfile(caminho_arquivo):
-            confirmar = input(f"O arquivo '{nome_arquivo}' foi encontrado na pasta /conversion. Deseja usar este arquivo? (y/n): ").lower()
+            confirmar = input(f"O arquivo '{nome_arquivo}' foi encontrado na pasta /to-convert. Deseja usar este arquivo? (y/n): ").lower()
             if confirmar == 'y':
                 return caminho_arquivo
             else:
                 print("Vamos tentar novamente.")
         else:
-            print(f"Arquivo '{nome_arquivo}' não encontrado na pasta /conversion. Tente novamente.")
+            print(f"Arquivo '{nome_arquivo}' não encontrado na pasta /to-convert. Tente novamente.")
 
 if __name__ == "__main__":
     arquivo_entrada = solicitar_arquivo()
     nome_saida = os.path.basename(arquivo_entrada)
-    caminho_saida = os.path.join("final", nome_saida)
+    caminho_saida = os.path.join("converted", nome_saida)
     asyncio.run(traduzir_arquivo_em_pedacos(arquivo_entrada, caminho_saida))
