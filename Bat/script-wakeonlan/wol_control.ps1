@@ -2,6 +2,11 @@
 # Wake-On-LAN + Desligamento + Verificacao OMV
 # ============================================
 
+# Author: Wellington Albuquerque Falcão
+# Version: 0.2
+# Date: 10/22/2025
+# Contact: wellingtonfalcao@gmail.com
+
 # ---- CONFIGURACOES ----
 $macAddress = "74-D0-2B-CC-77-7F"
 $ipAddress  = "192.168.31.40"
@@ -66,13 +71,10 @@ function Check-OMVService {
     param([string]$remoteIP, [string]$user)
 
     try {
-        $cmd = "$user@$remoteIP systemctl is-active openmediavault-engined"
-        $status = & ssh $cmd 2>$null
-        if ($status -eq "active") {
-            return $true
-        } else {
-            return $false
-        }
+        $sshArgs = "$user@$remoteIP systemctl is-active openmediavault-engined"
+        $status = ssh $sshArgs 2>$null | Out-String
+        $status = $status.Trim()  # remove espaços e quebras de linha
+        if ($status -eq "active") { return $true } else { return $false }
     } catch {
         return $false
     }
@@ -106,21 +108,21 @@ do {
             Write-Host "Servico OMV: INATIVO"
         }
     } else {
-        Write-Host "Status atual: OFFLINE ($ipAddress)"
-        Write-Host "Servico OMV: N/A"
+        Write-Host "Status atual do NAS: OFFLINE ($ipAddress)"
+        Write-Host "Servico OMV: Indisponivel"
     }
 
     Write-Host ""
     Write-Host "1. Ligar NAS ($hostname)"
     Write-Host "2. Desligar NAS ($hostname)"
-    Write-Host "3. Sair"
+    Write-Host "3. Sair da Aplicacao"
     Write-Host "============================="
     $choice = Read-Host "Escolha uma opcao (1-3)"
 
     switch ($choice) {
         "1" { 
             Send-WakeOnLan -mac $macAddress
-            Write-Host "Aguardando $hostname ligar..."
+            Write-Host "Ligando $hostname..."
             if (Wait-ForOnline -ip $ipAddress -timeout 30) {
                 Write-Host "$hostname esta ONLINE"
                 Start-Sleep -Seconds 15  # espera para o OMV carregar
@@ -135,9 +137,9 @@ do {
         }
         "2" { 
             Remote-ShutdownSSH -remoteIP $ipAddress -user $username
-            # Ap�s desligar, reinicia o menu automaticamente
+            # Reinicia o menu automaticamente após desligar
         }
-        "3" { Write-Host "Saindo..." }
+        "3" { Write-Host "Desligando..." }
         default { Write-Host "Opcao invalida." }
     }
 

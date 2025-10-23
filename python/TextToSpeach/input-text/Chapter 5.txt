@@ -1,0 +1,2159 @@
+Capítulo 5
+
+
+
+Dobrar ou quebrar
+
+
+
+
+A vida não fica parada. Nem o código que escrevemos. Para acompanhar o ritmo de mudança de hoje, precisamos fazer todos os esforços para escrever código tão frouxo-quanto flexível-como possível. Caso contrário, podemos encontrar nosso código rapidamente se tornando desatualizado ou muito quebradiço para corrigir, e pode ser deixado para trás na corrida louca em direção ao futuro.
+
+De volta ao tópico 11, reversibilidade, conversamos sobre os perigos das decisões irreversíveis. Neste capítulo, diremos a você como tomar decisões reversíveis, para que seu código possa permanecer flexível e adaptável diante de um mundo incerto.
+
+Primeiro, olhamos para o acoplamento - as dependências entre bits de código. Tópico 28, a desacoplamento mostra como manter conceitos separados separados e decrescentes.
+
+Em seguida, examinaremos diferentes técnicas que você pode usar quando o Tópico 29, fazendo malabarismos com o mundo real. Examinaremos quatro estratégias diferentes para ajudar a gerenciar e reagir aos eventos - um aspecto crítico dos aplicativos modernos de software.
+
+O código processual e orientado a objetos tradicional pode estar muito bem acoplado para seus propósitos. No tópico 30, transformando a programação, aproveitaremos o estilo mais flexível e mais claro oferecido pelos pipelines de função, mesmo que seu idioma não os suportasse diretamente.
+
+O estilo comum orientado a objetos pode tentá-lo com outra armadilha. Não caia nisso, ou você acabará pagando um tópico 31, imposto sobre herança. Exploraremos melhores alternativas para manter seu código flexível e mais fácil de alterar.
+
+E, é claro, uma boa maneira de permanecer flexível é escrever menos código. A mudança de código deixa você aberto à possibilidade de introduzir novos bugs. Tópico 32, a configuração explicará como mover completamente os detalhes do código, onde eles podem ser alterados com mais segurança e facilidade.
+
+Todas essas técnicas ajudarão você a escrever código que se inclina e não quebre.
+
+
+
+
+
+Tópico 28
+
+Desacoplar
+
+
+
+
+Quando tentamos escolher qualquer coisa por si só, a achamos preso a todo o resto do universo.
+
+
+
+John Muir, meu primeiro verão na Serra
+
+
+
+No tópico 8, a essência do bom design, afirmamos que o uso de bons princípios de design facilitará o código que você escreve fácil de alterar. O acoplamento é o inimigo da mudança, porque liga as coisas que devem mudar em paralelo. Isso dificulta a mudança: você gasta tempo rastreando todas as partes que precisam mudar, ou gasta tempo se perguntando por que as coisas quebraram quando você mudou "apenas uma coisa" e não as outras coisas às quais foi acoplado.
+
+Quando você está projetando algo que deseja ser rígido, uma ponte ou uma torre, talvez, você coloca os componentes:
+
+
+
+Os links funcionam juntos para tornar a estrutura rígida.
+
+Compare isso com algo assim:
+
+
+
+Aqui não há rigidez estrutural: os links individuais podem mudar e outros apenas a acomodam.
+
+Quando você está projetando pontes, deseja que elas tenham a forma deles; Você precisa que eles sejam rígidos. Mas quando você está projetando software que deseja mudar, deseja exatamente o contrário: deseja que seja flexível. E para ser flexível, os componentes individuais devem ser acoplados ao menor número possível de componentes.
+
+E, para piorar a situação, o acoplamento é transitivo: se a for acoplado a B e C, e B é acoplado a M e N e C a X e Y, então A é realmente acoplado a B, C, M, N, X e Y.
+
+Isso significa que há um princípio simples que você deve seguir:
+
+Dica 44 O código desacoplado é mais fácil de alterar
+
+
+
+Dado que normalmente não codificamos o uso de vigas de aço e rebites, o que significa despachar o código? Nesta seção, falaremos sobre:
+
+Naufrágios de trem - cadeias de chamadas de método
+
+Globalização - os perigos das coisas estáticas
+
+Herança - por que a subclasse é perigosa
+
+
+
+Até certo ponto, essa lista é artificial: o acoplamento pode ocorrer a qualquer momento, duas peças de código compartilham algo; portanto, ao ler o que se segue, fique de olho nos padrões subjacentes para que você possa aplicá -los ao seu código. E mantenha uma atenção para alguns dos sintomas do acoplamento:
+
+Dependências malucas entre módulos ou bibliotecas não relacionados.
+
+
+
+Alterações "simples" em um módulo que se propagam através de módulos não relacionados no sistema ou quebram coisas em outras partes do sistema.
+
+
+
+Os desenvolvedores que têm medo de alterar o código porque não têm certeza do que pode ser afetado.
+
+
+
+Reuniões em que todos precisam comparecer, porque ninguém tem certeza de quem será afetado por uma mudança.
+
+
+
+
+
+Naufrágios de trem
+
+
+Todos nós vimos (e provavelmente escrito) código como este:
+
+Public void ApplyDiscount (cliente, ordem_id, desconto) {
+
+Totais =
+cliente
+
+.Der
+
+.Find (order_id)
+
+.Gettotals ();
+
+Totals.GrandTotal = Totals.grandtotal - desconto;
+
+ToTals.discount = desconto;
+
+}
+
+
+
+Estamos recebendo uma referência a alguns pedidos de um objeto de cliente, usando isso para encontrar um pedido específico e, em seguida, obtendo o conjunto de totais para o pedido. Usando esses totais, subtraímos o desconto do pedido total do pedido e também os atualizamos com esse desconto.
+
+Esse pedaço de código está atravessando cinco níveis de abstração, do cliente ao total. Por fim, nosso código de nível superior deve saber que um objeto de cliente expõe pedidos, que os pedidos têm um método de localização que leva um ID do pedido e retorna um pedido e que o objeto de ordem possui um objeto de totais que possui getters e setters para grandes totais e descontos. Isso é muito conhecimento implícito. Mas, pior, são muitas coisas que não podem mudar no futuro se esse código continuar a funcionar. Todos os carros em um trem são acoplados, assim como todos os métodos e atributos em um acidente de trem.
+
+Vamos imaginar que o negócio decide que nenhum pedido pode ter um desconto de mais de 40%. Onde colocaríamos o código que aplicaria essa regra?
+
+Você pode dizer que ele pertence à função ApplyDiscount que acabamos de escrever. Isso certamente faz parte da resposta. Mas com o código da maneira que está agora, você não pode saber que essa é a resposta toda. Qualquer pedaço de código, em qualquer lugar, poderia definir campos no objeto de totais e, se o mantenedor desse código não recebesse o memorando, não estaria checando contra a nova política.
+
+Uma maneira de olhar para isso é pensar em responsabilidades. Certamente o objeto de totais deve ser responsável pelo gerenciamento dos totais. E, no entanto, não é: é realmente apenas um contêiner para um monte de campos que qualquer pessoa pode consultar e atualizar.
+
+A correção é aplicar algo que chamamos:
+
+Dica 45 Diga, não pergunte
+
+
+
+Esse princípio diz que você não deve tomar decisões com base no estado interno de um objeto e, em seguida, atualize esse objeto. Fazer isso destrói totalmente os benefícios do encapsulamento e, ao fazê -lo, espalha o conhecimento da implementação ao longo do código. Portanto, a primeira correção para o nosso acidente de trem é delegar o desconto ao objeto total:
+
+Public void ApplyDiscount (cliente, ordem_id, desconto) {
+
+Cliente
+
+.Der
+
+.Find (order_id)
+
+.Gettotals ()
+
+.ApplyDiscount (desconto);
+
+}
+
+
+
+Temos o mesmo tipo de problema do Tell-não-OSC (TDA) com o objeto do cliente e seus pedidos: não devemos buscar sua lista de pedidos e pesquisá-los. Em vez disso, devemos receber o pedido que queremos diretamente do cliente:
+
+Public void ApplyDiscount (cliente, ordem_id, desconto) {
+
+Cliente
+
+.Findorder (order_id)
+
+.Gettotals ()
+
+.ApplyDiscount (desconto);
+
+}
+
+
+
+O mesmo se aplica ao nosso objeto de ordem e seus totais. Por que o mundo exterior deve saber que a implementação de um pedido usa um objeto separado para armazenar seus totais?
+
+Public void ApplyDiscount (cliente, ordem_id, desconto) {
+
+Cliente
+
+.Findorder (order_id)
+
+.ApplyDiscount (desconto);
+
+}
+
+
+
+E é aqui que provavelmente pararíamos.
+
+Nesse ponto, você pode estar pensando que o TDA nos faria adicionar um método ApplyDiscountToorder (Order_Id) aos clientes. E, se seguido, é esbelto, seria.
+
+Mas o TDA não é uma lei da natureza; É apenas um padrão para nos ajudar a reconhecer problemas. Nesse caso, estamos à vontade para expor o fato de que um cliente tem pedidos e que podemos encontrar um desses pedidos pedindo ao objeto do cliente. Esta é uma decisão pragmática.
+
+Em todas as aplicações, existem certos conceitos de nível superior que são universais. Neste aplicativo, esses conceitos incluem clientes e pedidos. Não faz sentido ocultar pedidos totalmente dentro de objetos do cliente: eles têm uma existência própria. Portanto, não temos nenhum problema em criar APIs que exponham objetos de ordem.
+
+
+
+
+
+A lei do demeter
+
+
+As pessoas costumam falar sobre algo chamado Lei de Deméter, ou LOD, em relação ao acoplamento. O LOD é um conjunto de diretrizes [37] escrito no final dos anos 80 por Ian Holland. Ele os criou para ajudar os desenvolvedores no projeto Demeter a manter suas funções mais limpas e dissociadas.
+
+O LOD diz que um método definido em uma classe C só deve ligar:
+
+Outros métodos de instância em C
+
+Seus parâmetros
+
+Métodos em objetos que ele cria, tanto na pilha quanto na pilha
+
+Variáveis globais
+
+
+
+Na primeira edição deste livro, passamos algum tempo descrevendo o LOD. Nos 20 anos intermediários, a flor desapareceu nessa rosa em particular. Agora não gostamos do "Global
+Cláusula variável "(por razões em que entraremos na próxima seção). Também descobrimos que é difícil usar isso na prática: é um pouco como ter que analisar um documento legal sempre que você chama um método.
+
+No entanto, o princípio ainda é sólido. Apenas recomendamos uma maneira um pouco mais simples de expressar quase a mesma coisa:
+
+Dica 46 Não encorrer as chamadas do método
+
+
+
+Tente não ter mais de um "". Quando você acessa algo. E acessar algo também abrange casos em que você usa variáveis intermediárias, como no código a seguir:
+
+# Isso é um estilo muito ruim
+
+Quantidade = cliente.orders.Last (). Totals ().
+
+​
+
+# E isso também ...
+
+Pedidos = cliente.orders;
+
+Last = ordens.Last ();
+
+Totais = last.totals ();
+
+Vale = toTals.amount;
+
+
+
+Há uma grande exceção à regra de um ponto: a regra não se aplica se as coisas que você está encadeando são realmente, muito improváveis de mudar. Na prática, qualquer coisa em seu aplicativo deve ser considerada provável que mude. Qualquer coisa em uma biblioteca de terceiros deve ser considerada volátil, principalmente se os mantenedores dessa biblioteca mudarem de APIs entre as liberações. As bibliotecas que acompanham o idioma, no entanto, provavelmente são bastante estáveis e, portanto, ficaremos felizes com o código como:
+
+Pessoas
+
+.Sort_by {| Person | pessoa.age}
+
+. Primeiro (10)
+
+.Map {| pessoa | pessoa.name}
+
+
+
+Esse código Ruby funcionou quando escrevemos a primeira edição, há 20 anos, e provavelmente ainda funcionará quando entrarmos na casa para programadores antigos (a qualquer dia agora ...).
+
+
+
+
+
+Correntes e oleodutos
+
+
+No tópico 30, transformando a programação, conversamos sobre compor funções em pipelines. Esses pipelines transformam dados, passando de uma função para a próxima. Isso não é o mesmo que um acidente de trem de chamadas de método, pois não estamos confiando nos detalhes da implementação oculta.
+
+Isso não quer dizer que os pipelines não introduzam algum acoplamento: eles o fazem. O formato dos dados retornados por uma função em um pipeline deve ser compatível com o formato aceito pelo próximo.
+
+Nossa experiência é que essa forma de acoplamento é muito menos uma barreira para alterar o código do que o formulário introduzido pelos destroços de trem.
+
+
+
+
+
+Os males da globalização
+
+
+Os dados globalmente acessíveis são uma fonte insidiosa de acoplamento entre os componentes do aplicativo. Cada parte dos dados globais age como se todos os métodos em seu aplicativo ganhassem repentinamente um parâmetro adicional: afinal, que os dados globais estivessem disponíveis em todos os métodos.
+
+Globals Couple Code por muitos motivos. O mais óbvio é que uma alteração na implementação do global afeta potencialmente todo o código do sistema. Na prática, é claro, o impacto é bastante limitado; O problema realmente se resume a saber que você encontrou todos os lugares que precisa mudar.
+
+Os dados globais também criam acoplamento quando se trata de separar seu código.
+
+Muito foi feito dos benefícios da reutilização do código. Nossa experiência foi que a reutilização provavelmente não deve ser uma preocupação principal ao criar código, mas o pensamento que é necessário para tornar o código reutilizável deve fazer parte da sua rotina de codificação. Quando você torna o código reutilizável, você fornece interfaces limpas, dissociando -o do restante do seu código. Isso permite extrair um método ou módulo sem arrastar todo o resto junto com ele. E se o seu código usar dados globais, ficará difícil dividi -los do resto.
+
+Você verá esse problema ao escrever testes de unidade para código que usa dados globais. Você se encontrará escrevendo um monte de código de configuração para criar um ambiente global apenas para permitir que seu teste seja executado.
+
+Dica 47 Evite dados globais
+
+
+
+
+
+Dados globais incluem singletons
+
+
+Na seção anterior, tivemos o cuidado de falar sobre dados globais e não variáveis globais. Isso ocorre porque as pessoas costumam nos dizer "Olhe! Sem variáveis globais. Enrolei tudo como dados de instância em um objeto singleton ou módulo global".
+
+Tente novamente, Skippy. Se tudo o que você tem é um singleton com um monte de variáveis de instância exportadas, ainda são apenas dados globais. Só tem um nome mais longo.
+
+Então, as pessoas pegam esse singleton e ocultam todos os dados por trás dos métodos. Em vez de codificar config.log_level, eles agora dizem config.log_level () ou config.getLoglevel (). Isso é melhor, porque significa que seus dados globais têm um pouco de inteligência por trás disso. Se você decidir alterar a representação dos níveis de log, poderá manter a compatibilidade mapeando entre o novo e o antigo na API Config. Mas você ainda tem apenas o único conjunto de dados de configuração.
+
+
+
+
+
+Dados globais incluem recursos externos
+
+
+Qualquer mutável
+Recurso externo são dados globais. Se o seu aplicativo usar um banco de dados, armazenamento de dados, sistema de arquivos, API de serviço e assim por diante, ele corre o risco de cair na armadilha da globalização. Novamente, a solução é garantir que você sempre envolva esses recursos por trás do código que você controla.
+
+Dica 48 Se for importante o suficiente para ser global, envolva -o em uma API
+
+
+
+
+
+A herança adiciona acoplamento
+
+
+O uso indevido da subclasse, onde uma classe herda o estado e o comportamento de outra classe, é tão importante que discutimos em sua própria seção, tópico 31, imposto sobre herança.
+
+
+
+
+
+Novamente, é tudo sobre mudança
+
+
+O código acoplado é difícil de alterar: as alterações em um só lugar podem ter efeitos secundários em outras partes do código e, geralmente, em locais difíceis de encontrar que só vêm à tona um mês depois na produção.
+
+Manter seu código tímido: tê -lo apenas lida com as coisas que ele conhece diretamente ajudará a manter seus aplicativos dissociados, e isso os tornará mais passíveis de mudar.
+
+
+
+
+
+Seções relacionadas incluem
+
+
+Tópico 8, a essência do bom design
+
+Tópico 9, seco - os males de duplicação
+
+Tópico 10, Ortogonalidade
+
+Tópico 11, reversibilidade
+
+Tópico 29, manipulando o mundo real
+
+Tópico 30, transformando a programação
+
+Tópico 31, Imposto sobre Herança
+
+Tópico 32, configuração
+
+Tópico 33, quebrando o acoplamento temporal
+
+Tópico 34, Estado compartilhado é um estado incorreto
+
+Tópico 35, atores e processos
+
+Tópico 36, Blackboards
+
+Discutimos Tell, não pergunte em nosso artigo de construção de software de 2003 The Art of Enbugging. [38]
+
+
+
+
+
+Tópico 29
+
+Fazendo malabarismo com o mundo real
+
+
+
+
+As coisas não acontecem; Eles são feitos para acontecer.
+
+
+
+John F. Kennedy
+
+
+
+Antigamente, quando seus autores ainda tinham boa aparência, os computadores não eram particularmente flexíveis. Normalmente, organizamos a maneira como interagimos com eles com base em suas limitações.
+
+Hoje, esperamos mais: os computadores precisam se integrar ao nosso mundo, não o contrário. E nosso mundo está confuso: as coisas estão constantemente acontecendo, as coisas são movidas por aí, mudamos de idéia,…. E os aplicativos que escrevemos de alguma forma precisam descobrir o que fazer.
+
+Esta seção trata de escrever esses aplicativos responsivos.
+
+Começaremos com o conceito de um evento.
+
+
+
+
+
+Eventos
+
+
+Um evento representa a disponibilidade de informações. Pode vir do mundo exterior: um usuário clicando em um botão ou uma atualização de cotação de estoque. Pode ser interno: o resultado de um cálculo está pronto, uma pesquisa termina. Pode até ser algo tão trivial quanto buscar o próximo elemento em uma lista.
+
+Qualquer que seja a fonte, se escrevermos aplicativos que respondem aos eventos e ajustem o que eles fazem com base nesses eventos, esses aplicativos funcionarão melhor no mundo real. Seus usuários acharão que eles são mais interativos e os próprios aplicativos farão melhor uso dos recursos.
+
+Mas como podemos escrever esses tipos de aplicativos? Sem algum tipo de estratégia, nos encontraremos rapidamente confusos, e nossos aplicativos estarão uma bagunça de código fortemente acoplado.
+
+Vejamos quatro estratégias que ajudam.
+
+Máquinas de estado finitas
+
+O padrão do observador
+
+Publicar/assinar
+
+Programação e riachos reativos
+
+
+
+
+
+Máquinas de estado finitas
+
+
+Dave descobre que escreve código usando uma máquina de estado finita (FSM) quase toda semana. Muitas vezes, a implementação do FSM será apenas algumas linhas de código, mas essas poucas linhas ajudam a desembaraçar muita bagunça em potencial.
+
+O uso de um FSM é trivialmente fácil, e, no entanto, muitos desenvolvedores evitam -se deles. Parece haver uma crença de que eles são difíceis ou que se aplicam apenas se você estiver trabalhando com hardware ou que precisa usar uma biblioteca difícil de entender. Nada disso é verdadeiro.
+
+
+
+
+
+A anatomia de um FSM pragmático
+
+
+Uma máquina de estado é basicamente apenas uma especificação de como lidar com eventos. Consiste em um conjunto de estados, um dos quais é o estado atual. Para cada estado, listamos os eventos que são significativos para esse estado. Para cada um desses eventos, definimos o novo estado atual do sistema.
+
+Por exemplo, podemos estar recebendo mensagens multipartidas de um WebSocket. A primeira mensagem é um cabeçalho. Isto é seguido por qualquer número de mensagens de dados, seguido de uma mensagem à direita. Isso pode ser representado como um FSM como este:
+
+
+
+Começamos no "estado inicial". Se recebermos uma mensagem de cabeçalho, fazemos a transição para o estado de "mensagem de leitura". Se recebermos mais alguma coisa enquanto estivermos no estado inicial (a linha rotulada com um asterisco), fazemos a transição para o estado de "erro" e terminamos.
+
+Enquanto estivermos no estado de "mensagem de leitura", podemos aceitar também
+Mensagens de dados, nesse caso, continuamos lendo no mesmo estado, ou podemos aceitar uma mensagem de trailer, que nos transita para o estado "feito". Qualquer outra coisa causa uma transição para o estado de erro.
+
+O interessante sobre o FSMS é que podemos expressá -los puramente como dados. Aqui está uma tabela representando nossa mensagem analisadora:
+
+
+
+As linhas da tabela representam os estados. Para descobrir o que fazer quando ocorrer um evento, procure a linha para o estado atual, proceda a coluna que representa o evento, o conteúdo dessa célula é o novo estado.
+
+O código que lida com ele é igualmente simples:
+
+Event/simples_fsm.rb
+
+1: transições = {
+
+- Inicial: {cabeçalho :: Reading},
+
+- Reading: {Data :: Reading, Trailer :: done},
+
+-}
+
+5:
+
+- estado =: inicial
+
+-
+
+- While State! =: Coned && State! =: Erro
+
+- msg = get_next_message ()
+
+10: estado = transições [estado] [msg.msg_type] || : Erro
+
+- final
+
+
+
+O código que implementa as transições entre os estados está na linha 10. Indexa a tabela de transição usando o estado atual e, em seguida, indexa as transições para esse estado usando o tipo de mensagem. Se não houver um novo estado correspondente, ele define o estado como: erro.
+
+
+
+
+
+Adicionando ações
+
+
+Um FSM puro, como o que estávamos apenas olhando, é um analisador de fluxo de eventos. Sua única saída é o estado final. Podemos reforçar, adicionando ações que são acionadas em determinadas transições.
+
+Por exemplo, podemos precisar extrair todas as strings em um arquivo de origem. Uma string é o texto entre aspas, mas uma barra de barriga em uma string escapa do próximo caractere; portanto, "ignorar \" aspas \ "" é uma única string. Aqui está um FSM que faz isso:
+
+
+
+Desta vez, cada transição tem dois rótulos. A parte superior é o evento que o desencadeia, e o inferior é a ação a ser tomada à medida que nos movemos entre os estados.
+
+Expressaremos isso em uma tabela, como fizemos da última vez. No entanto, neste caso, cada entrada da tabela é uma lista de dois elementos que contém o próximo estado e o nome de uma ação:
+
+Evento/Strings_fsm.rb
+
+Transições = {
+
+​
+
+# Novo ação estatal atual para tomar
+
+#---------------------------------------------------------
+
+​
+
+Look_for_string: {
+
+'"' => [: In_string ,: start_new_string],
+
+: Default => [: look_for_string ,: ignorar],
+
+},
+
+​
+
+In_string: {
+
+'"' => [: Look_for_string ,: finall_current_string],
+
+'\\' => [: copy_next_char ,: add_current_to_string],
+
+: Default => [: in_string ,: add_current_to_string],
+
+},
+
+​
+
+Copy_next_char: {
+
+: Default => [: in_string ,: add_current_to_string],
+
+},
+
+}
+
+
+
+Também adicionamos a capacidade de especificar uma transição padrão, realizada se o evento não corresponder a nenhuma das outras transições para esse estado.
+
+Agora vamos olhar para o código:
+
+Evento/Strings_fsm.rb
+
+Estado =: look_for_string
+
+Resultado = []
+
+​
+
+Enquanto ch = stdin.getc
+
+Estado, ação = transições [estado] [ch] || Transições [estado] [: padrão]
+
+Ação de caso
+
+Quando: ignore
+
+Quando: start_new_string
+
+Resultado = []
+
+Quando: add_current_to_string
+
+Resultado << Ch
+
+Quando: finaliz_current_string
+
+Coloca o resultado.Join
+
+Fim
+
+Fim
+
+
+
+Isso é semelhante ao exemplo anterior, pois percorremos os eventos (os caracteres da entrada), desencadeando transições. Mas faz mais do que o código anterior. O resultado de cada transição é um novo estado e o nome de uma ação. Usamos o nome da ação para selecionar o código para ser executado antes de voltarmos ao loop.
+
+Este código é muito básico, mas faz o trabalho. Existem muitas outras variantes: a tabela de transição pode usar funções anônimas ou ponteiros de função para as ações, você pode envolver o código que implementa a máquina de estado em uma classe separada, com seu próprio estado e assim por diante.
+
+Não há nada a dizer que você deve processar todas as transições de estado ao mesmo tempo. Se você estiver passando pelas etapas para inscrever um usuário em seu aplicativo, é provável que haja várias transições ao entrar em seus detalhes, validar o email, concordar com os 107 avisos legislados diferentes que os aplicativos on -line devem agora dar e assim por diante. Manter o estado em armazenamento externo e usá -lo para dirigir uma máquina de estado é uma ótima maneira de lidar com esse tipo de requisitos de fluxo de trabalho.
+
+
+
+
+
+Máquinas de estado são um começo
+
+
+As máquinas estaduais são subutilizadas pelos desenvolvedores e gostaríamos de incentivá -lo a procurar oportunidades para aplicá -las. Mas eles não resolvem todos os problemas associados aos eventos. Então, vamos passar para algumas outras maneiras de olhar para os problemas de malabarismo
+eventos.
+
+
+
+
+
+O padrão do observador
+
+
+No padrão do observador, temos uma fonte de eventos, chamada de observável e uma lista de clientes, os observadores, que estão interessados nesses eventos.
+
+Um observador registra seu interesse com o observável, normalmente passando uma referência a uma função a ser chamada. Posteriormente, quando o evento ocorre, o observável itera sua lista de observadores e chama a função que cada um passou. O evento é dado como um parâmetro para essa chamada.
+
+Aqui está um exemplo simples em Ruby. O módulo Terminator é usado para encerrar o aplicativo. Antes disso, no entanto, notifica todos os seus observadores que o aplicativo vai sair. [39] Eles podem usar essa notificação para arrumar recursos temporários, comprometer dados e assim por diante:
+
+Evento/Observer.rb
+
+Terminador do módulo
+
+Retornos de chamada = []
+
+​
+
+Def Self.register (retorno de chamada)
+
+Retornos de chamada << retorno de chamada
+
+Fim
+
+​
+
+Def self.exit (exit_status)
+
+Retorno de chamada.Each {| Retorno de chamada | retorno de chamada. (Exit_status)}
+
+Saída! (Exit_status)
+
+Fim
+
+Fim
+
+​
+
+Terminator.register (-> (status) {coloca "Retorno de chamada 1 vê#{status}"})
+
+Terminator.register (-> (status) {coloca "Retorno de chamada 2 vê#{status}"})
+
+​
+
+Terminator.Exit (99)
+
+
+
+$ Ruby evento/observador.rb
+
+Retorno de chamada 1 vê 99
+
+Retorno de chamada 2 vê 99
+
+
+
+Não há muito código envolvido na criação de um observável: você pressiona uma referência de função em uma lista e chama essas funções quando o evento ocorrer. Este é um bom exemplo de quando não usar uma biblioteca.
+
+O padrão observador/observável é usado há décadas e nos serviu bem. É particularmente prevalente nos sistemas de interface do usuário, onde os retornos de chamada são usados para informar o aplicativo que ocorreu alguma interação.
+
+Mas o padrão do observador tem um problema: como cada um dos observadores precisa se registrar no observável, ele introduz o acoplamento. Além disso, como na implementação típica, os retornos de chamada são tratados em linha pelos observáveis, de maneira síncrona, ela pode introduzir gargalos de desempenho.
+
+Isso é resolvido pela próxima estratégia, publique/assine.
+
+
+
+
+
+Publicar/assinar
+
+
+Publicar/assinar (pubSub) generaliza o padrão de observador, ao mesmo tempo resolvendo os problemas de acoplamento e desempenho.
+
+No modelo PubSub, temos editores e assinantes. Estes são conectados via canais. Os canais são implementados em um corpo separado de código: às vezes uma biblioteca, às vezes um processo e, às vezes, uma infraestrutura distribuída. Todos esses detalhes de implementação estão ocultos do seu código.
+
+Cada canal tem um nome. Os assinantes registram interesse em um ou mais desses canais nomeados e os editores escrevem eventos para eles. Ao contrário do padrão do observador, a comunicação entre o editor e o assinante é tratada fora do seu código e é potencialmente assíncrona.
+
+Embora você possa implementar um sistema PubSub muito básico, provavelmente não deseja. A maioria dos provedores de serviços em nuvem possui ofertas de pubsub, permitindo conectar aplicativos em todo o mundo. Todo idioma popular terá pelo menos uma biblioteca pubsub.
+
+O PubSub é uma boa tecnologia para dissociar o manuseio de eventos assíncronos. Ele permite que o código seja adicionado e substituído, potencialmente enquanto o aplicativo estiver em execução, sem alterar o código existente. A desvantagem é que pode ser difícil ver o que está acontecendo em um sistema que usa muito o PubSub: você não pode olhar para um editor e ver imediatamente quais assinantes estão envolvidos com uma mensagem específica.
+
+Comparado ao padrão do observador, o PubSub é um ótimo exemplo de redução do acoplamento, abstraindo por meio de uma interface compartilhada (o canal). No entanto, ainda é basicamente apenas um sistema de passagem de mensagens. A criação de sistemas que respondem a combinações de eventos precisarão de mais do que isso, então vamos procurar maneiras de adicionar uma dimensão de tempo ao processamento de eventos.
+
+
+
+
+
+Programação, córregos e eventos reativos
+
+
+Se você já usou uma planilha, estará familiarizado com a programação reativa. Se uma célula contiver uma fórmula que se refere a uma segunda célula, atualizar a segunda célula também faz com que a primeira atualize. Os valores reagem como os valores que eles usam mudam.
+
+Existem muitas estruturas que podem ajudar com esse tipo de reatividade no nível de dados: no reino do navegador reagir e vue.js são os favoritos atuais (mas, sendo este JavaScript, essas informações estarão desatualizadas antes que este livro seja impresso).
+
+Fica claro que os eventos também podem ser usados para desencadear reações no código, mas não é
+necessariamente fácil de colocá -los. É aí que entra os fluxos.
+
+Fluxos vamos tratar os eventos como se fossem uma coleção de dados. É como se tivéssemos uma lista de eventos, que ficaram mais longos quando novos eventos chegarem. A beleza disso é que podemos tratar fluxos como qualquer outra coleção: podemos manipular, combinar, filtrar e fazer todas as outras coisas de dados que conhecemos tão bem. Podemos até combinar fluxos de eventos e coleções regulares. E os fluxos podem ser assíncronos, o que significa que seu código tem a oportunidade de responder aos eventos à medida que chegam.
+
+A linha de base de fato atual para o manuseio de eventos reativos é definida no site http://reactivex.io, que define um conjunto de princípios e documentos comuns. Aqui usaremos a biblioteca RXJS para JavaScript.
+
+Nosso primeiro exemplo pega dois fluxos e os preenche: o resultado é um novo fluxo em que cada elemento contém um item do primeiro fluxo de entrada e um item do outro. Nesse caso, o primeiro fluxo é simplesmente uma lista de cinco nomes de animais. O segundo fluxo é mais interessante: é um cronômetro de intervalo que gera um evento a cada 500ms. Como os fluxos são fechados, um resultado é gerado apenas quando os dados estão disponíveis em ambos e, portanto, nosso fluxo de resultados emite apenas um valor a cada meio segundo:
+
+Event/rx0/index.js
+
+Importar * como observável de 'rxjs'
+
+Importar {logValues} de "../rxcommon/logger.js"
+
+​
+
+Deixe os animais = observável. De ("Ant", "Bee", "Cat", "Dog", "Elk")
+
+Deixe o ticker = observável.Interval (500)
+
+​
+
+Seja combinado = observável.zip (animais, ticker)
+
+​
+
+Combined.subScribe (Next => LogValues (JSON.Stringify (Next))))
+
+
+
+Este código usa uma função de log simples [40] que adiciona itens a uma lista na janela do navegador. Cada item é o registro de data e hora com o tempo em milissegundos desde que o programa começou a ser executado. Aqui está o que mostra para o nosso código:
+
+
+
+Observe os registros de data e hora: estamos recebendo um evento do fluxo a cada 500ms. Cada evento contém um número de série (criado pelo intervalo observável) e o nome do próximo animal da lista. Assistindo ao vivo em um navegador, as linhas de toras aparecem a cada meio segundo.
+
+Os fluxos de eventos são normalmente preenchidos à medida que os eventos ocorrem, o que implica que os observáveis que os povoam podem ser executados em paralelo. Aqui está um exemplo que busca informações sobre usuários de um site remoto. Para isso, usaremos https://reqres.in, um site público que fornece uma interface de repouso aberta. Como parte de sua API, podemos buscar dados sobre um usuário específico (falso) executando uma solicitação GET para usuários/«id». Nosso código busca os usuários com os IDs 3, 2 e 1:
+
+Event/rx1/index.js
+
+Importar * como observável de 'rxjs'
+
+Importar {Mergemap} de 'rxjs/operadores'
+
+Importar {ajax} de 'rxjs/ajax'
+
+Importar {logValues} de "../rxcommon/logger.js"
+
+​
+
+Deixe os usuários = observável. De (3, 2, 1)
+
+​
+
+Let Result = Users.pipe (
+
+Mergemap ((usuário) => ajax.getjson (`https://reqres.in/api/users/ $ {user}`))
+
+)
+
+​
+
+Resultado.Subscribe (
+
+Resp => logValues (json.stringify (resp.data)),
+
+Err => console.error (json.stringify (err))
+
+)
+
+
+
+Os detalhes internos do código não são muito importantes. O que é emocionante é o resultado, mostrado na captura de tela a seguir:
+
+
+
+Veja os registros de data e hora: as três solicitações, ou três fluxos separados, foram processados em paralelo, o primeiro a voltar, para o ID 2, levou 82ms, e os dois próximos voltaram 50 e 51ms depois.
+
+
+
+
+
+Fluxos de eventos são coleções assíncronas
+
+
+No exemplo anterior, nossa lista de IDs de usuário (nos usuários observáveis) era estática. Mas não precisa ser. Talvez queremos coletar essas informações quando as pessoas fazem login em nosso site. Tudo o que precisamos fazer é gerar um evento observável contendo seu ID de usuário quando a sessão é criada e usar essa observável em vez da estática. Em seguida, estaríamos buscando detalhes sobre os usuários enquanto recebíamos esses IDs e, presumivelmente, armazenávamos em algum lugar.
+
+Essa é uma abstração muito poderosa: não precisamos mais pensar no tempo como algo que temos que gerenciar. Os fluxos de eventos unificam o processamento síncrono e assíncrono por trás de uma API comum e conveniente.
+
+
+
+
+
+Os eventos são onipresentes
+
+
+Os eventos estão por toda parte. Alguns são óbvios: um clique de botão, um timer expirando. Outros são menos: alguém efetuando login, uma linha em um arquivo que corresponde a um padrão. Mas qualquer que seja sua fonte, o código criado em torno dos eventos pode ser mais receptivo e melhor desacoplado do que seu mais linear
+contrapartida.
+
+
+
+
+
+Seções relacionadas incluem
+
+
+Tópico 28, dissociação
+
+Tópico 36, Blackboards
+
+
+
+
+
+Exercícios
+
+
+Exercício 19 (resposta possível)
+
+Na seção FSM, mencionamos que você poderia mover a implementação genérica da máquina de estado para sua própria classe. Essa classe provavelmente seria inicializada passando em uma tabela de transições e um estado inicial.
+
+Tente implementar o extrator de string dessa maneira.
+
+Exercício 20 (resposta possível)
+
+Qual dessas tecnologias (talvez em combinação) seria uma boa opção para as seguintes situações:
+
+Se você receber três eventos de interface de rede em cinco minutos, notifique a equipe de operações.
+
+
+
+Se for após o pôr do sol, e há um movimento detectado no fundo da escada seguido de movimento detectado no topo da escada, ligue as luzes no andar de cima.
+
+
+
+Você deseja notificar vários sistemas de relatórios de que um pedido foi concluído.
+
+
+
+Para determinar se um cliente se qualifica para um empréstimo de carro, o aplicativo precisa enviar solicitações para três serviços de back -end e aguardar as respostas.
+
+
+
+
+
+Tópico 30
+
+Programação transformadora
+
+
+
+
+Se você não pode descrever o que está fazendo como processo, não sabe o que está fazendo.
+
+
+
+W. Edwards Deming, (Att)
+
+
+
+Todos os programas transformam dados, convertendo uma entrada em uma saída. E, no entanto, quando pensamos em design, raramente pensamos em criar transformações. Em vez disso, nos preocupamos com classes e módulos, estruturas de dados e algoritmos, idiomas e estruturas.
+
+Achamos que esse foco no código geralmente perde o ponto: precisamos voltar a pensar em programas como sendo algo que transforma as entradas em saídas. Quando o fazemos, muitos dos detalhes que nos preocupamos anteriormente evaporam. A estrutura se torna mais clara, o manuseio de erros mais consistente e o acoplamento cai muito para baixo.
+
+Para iniciar nossa investigação, vamos levar a máquina do tempo de volta à década de 1970 e pedir a um programador do UNIX que nos escreva um programa que lista os cinco arquivos mais longos em uma árvore de diretórios, onde o mais longo significa "ter o maior número de linhas".
+
+Você pode esperar que eles busquem um editor e comecem a digitar em C., mas não o fariam, porque estão pensando nisso em termos do que temos (uma árvore de diretório) e o que queremos (uma lista de arquivos). Então eles iam a um terminal e digitavam algo como:
+
+$ Find. -Type f | xargs wc -l | sort -n | cauda -5
+
+
+
+Esta é uma série de transformações:
+
+encontrar . -Type f
+
+Escreva uma lista de todos os arquivos (-Type f) dentro ou abaixo do diretório atual (.) Para saída padrão.
+
+
+
+Xargs wc -l
+
+Leia as linhas da entrada padrão e organize para que todas sejam passadas como argumentos para o comando wc -l. O programa WC com a opção -l conta o número de linhas em cada um de seus argumentos e grava cada resultado como "nome do arquivo de contagem" para a saída padrão.
+
+
+
+classificar -n
+
+Classifique a entrada padrão, assumindo que cada linha começa com um número (-n), escrevendo o resultado para a saída padrão.
+
+
+
+cauda -5
+
+Leia a entrada padrão e escreva apenas as últimas cinco linhas para a saída padrão.
+
+
+
+
+
+Execute isso no diretório do nosso livro e nós obtemos
+
+470 ./test_to_build.pml
+
+487 ./dbc.pml
+
+719 ./Domain_Languages.pml
+
+727 ./dry.pml
+
+9561 TOTAL
+
+
+
+Essa última linha é o número total de linhas em todos os arquivos (não apenas os mostrados), porque é isso que o WC faz. Podemos retirá -lo solicitando mais uma linha da cauda e ignorando a última linha:
+
+$ Find. -Type f | xargs wc -l | sort -n | cauda -6 | cabeça -5
+
+470 ./debug.pml
+
+470 ./test_to_build.pml
+
+487 ./dbc.pml
+
+719 ./Domain_Languages.pml
+
+727 ./dry.pml
+
+
+
+Figura 1. O pipeline de localização como uma série de transformações
+
+
+
+
+
+Vejamos isso em termos dos dados que fluem entre as etapas individuais. Nosso requisito original, “5 principais arquivos em termos de linhas”, torna -se uma série de transformações (também mostram na figura).
+
+Nome do diretório
+
+→ Lista de arquivos
+
+→ Liste com números de linha
+
+→ Lista classificada
+
+→ Total mais alto de cinco +
+
+→ Cinco mais altos
+
+É quase como uma linha de montagem industrial: alimentar dados brutos em uma extremidade e o produto acabado (informações) sai do outro.
+
+E gostamos de pensar em todo o código dessa maneira.
+
+Dica 49 A programação é sobre código, mas os programas são sobre dados
+
+
+
+
+
+Encontrando transformações
+
+
+Às vezes, a maneira mais fácil de encontrar as transformações é começar com o requisito e determinar suas entradas e saídas. Agora você definiu a função que representa o programa geral. Você pode então encontrar
+Etapas que o levam da entrada para a saída. Esta é uma abordagem de cima para baixo.
+
+Por exemplo, você deseja criar um site para pessoas que jogam jogos de palavras que encontram todas as palavras que podem ser feitas a partir de um conjunto de letras. Sua entrada aqui é um conjunto de letras, e sua saída é uma lista de palavras de três letras, palavras de quatro letras e assim por diante:
+
+"Lvyin" é transformado para → 3 => Ivy, Lin, Nil, Yin
+
+4 => inly, liney, viny
+
+5 => vinil
+
+
+
+
+
+(Sim, são todas as palavras, pelo menos de acordo com o dicionário MacOS.)
+
+O truque por trás do aplicativo geral é simples: temos um dicionário que agrupa palavras por uma assinatura, escolhida para que todas as palavras que contenham as mesmas letras tenham a mesma assinatura. A função de assinatura mais simples é exatamente a lista classificada de letras na palavra. Podemos então procurar uma sequência de entrada gerando uma assinatura e, em seguida, vendo quais palavras (se houver) no dicionário têm a mesma assinatura.
+
+Assim, o Anagram Finder se decompõe em quatro transformações separadas:
+
+Dados da amostra de transformação de etapa
+
+Etapa 0: entrada inicial "ylvin"
+
+Etapa 1: Todas as combinações de três ou mais letras Vin, VIY, VIL, VNY, VNL, VYL, INY, INL, IYL, NYL, VINY, VINL, VIYL, VNYL, INYL, Vinil
+
+Etapa 2: Assinaturas das combinações Inv, Ivy, Ilv, Nvy, Lnv, Lvy, Iny, Iln, Ily, Lny, Invy, Ilnv, Ilvy, Lnvy, Ilny, Ilnvy
+
+Etapa 3: Lista de todas as palavras do dicionário que correspondem a qualquer uma das assinaturas Ivy, Yin, Nil, Lin, Viny, Liny, Inly, Vinil
+
+Etapa 4: Palavras agrupadas por comprimento 3 => Ivy, lin, nil, yin
+
+4 => inly, liney, viny
+
+5 => vinil
+
+
+
+
+
+Transformações até o fim
+
+
+Vamos começar olhando para a Etapa 1, que pega uma palavra e cria uma lista de todas as combinações de três ou mais letras. Esta etapa pode ser expressa como uma lista de transformações:
+
+Dados da amostra de transformação de etapa
+
+Etapa 1.0: entrada inicial "vinil"
+
+Etapa 1.1: converter para os caracteres V, i, n, y, l
+
+Etapa 1.2: Obtenha todos os subconjuntos [], [v], [i],… [v, i], [v, n], [v, y],… [v, i, n], [v, i, y],… [v, n, y, l], [i, n, y, l], [v, i, n, y, l]
+
+Etapa 1.3: Apenas aqueles mais de três caracteres [v, i, n], [v, i, y],… [i, n, y, l], [v, i, n, y, l]
+
+Etapa 1.4: Converter de volta às cordas [Vin, VIY,… inyl, vinil]
+
+
+
+Chegamos agora ao ponto em que podemos implementar facilmente cada transformação no código (usando o Elixir neste caso):
+
+Função-Pipelines/anagrams/lib/anagrams.ex
+
+DEFP ALL_SUBSETS_LONGER_THAN_THREE_CHARACTERS (Word) Do
+
+Palavra
+
+|> String.codePoints ()
+
+|> Comb.subsets ()
+
+|> Stream.Filter (subconjunto FN -> Comprimento (subconjunto)> = 3 FIM)
+
+|> Stream.map (& list.to_string (& 1))
+
+Fim
+
+
+
+
+
+O que há com o operador |>?
+
+
+Elixir, juntamente com muitas outras linguagens funcionais, possui um operador de pipeline, às vezes chamado de tubo para frente ou apenas um tubo. [41] Tudo o que faz é pegar o valor à sua esquerda e inseri -lo como o primeiro parâmetro da função à sua direita, então
+
+"Vinil" |> String.CodePoints |> Comb.Subsets ()
+
+
+
+é o mesmo que escrever
+
+Comb.subsets (String.codePoints ("Vinil"))
+
+
+
+(Outros idiomas podem injetar esse valor canalizado como o último parâmetro da próxima função-depende em grande parte do estilo das bibliotecas internas.)
+
+Você pode pensar que isso é apenas açúcar sintático. Mas, de uma maneira muito real, o operador de pipeline é uma oportunidade revolucionária de pensar de maneira diferente. Usar um pipeline significa que você está pensando automaticamente em termos de transformação de dados; Cada vez que você vê |> Você está realmente vendo um lugar onde os dados estão fluindo entre uma transformação e a próxima.
+
+Muitos idiomas têm algo semelhante: Elm, F#e Swift têm |>, Clojure tem -> e ->> (que funciona de maneira um pouco diferente), r tem %> %. A Haskell possui operadores de tubos e facilita a declaração de novos. Enquanto escrevemos isso, se fala em adicionar |> ao javascript.
+
+Se o seu idioma atual suportar algo semelhante, você está com sorte. Caso contrário, veja o idioma x não possui pipelines.
+
+Enfim, de volta ao código.
+
+
+
+
+
+Continue transformando ...
+
+
+Agora observe a etapa 2 do programa principal, onde convertemos os subconjuntos em assinaturas. Novamente, é uma transformação simples - uma lista de subconjuntos se torna uma lista de assinaturas:
+
+Dados da amostra de transformação de etapa
+
+Etapa 2.0: Entrada inicial VIN, VIY,… inyl, vinil
+
+Etapa 2.1: Converta em assinaturas inv, Ivy… Ilny, Inlvy
+
+
+
+O código Elixir na listagem a seguir é tão simples:
+
+Função-Pipelines/anagrams/lib/anagrams.ex
+
+DEFP as_unique_signatures (subconjuntos) fazem
+
+Subconjuntos
+
+|> Stream.map (& dictionary.signature_of/1)
+
+Fim
+
+
+
+Agora, transformamos essa lista de assinaturas: cada assinatura é mapeada para a lista de palavras conhecidas
+com a mesma assinatura, ou nulo se não houver essas palavras. Temos então que remover os nilos e achatar as listas aninhadas em um único nível:
+
+Função-Pipelines/anagrams/lib/anagrams.ex
+
+DEFP find_in_dictionary (assinaturas) sim
+
+Assinaturas
+
+|> Stream.map (& dictionary.lookup_by_signature/1)
+
+|> Stream.reject (& is_nil/1)
+
+|> Stream.concat (& (& 1))
+
+Fim
+
+
+
+A etapa 4, agrupando as palavras por comprimento, é outra transformação simples, convertendo nossa lista em um mapa em que as chaves são os comprimentos, e os valores são todas as palavras com esse comprimento:
+
+Função-Pipelines/anagrams/lib/anagrams.ex
+
+DEFP group_by_length (palavras) sim
+
+Palavras
+
+|> Enum.sort ()
+
+|> Enum.group_by (& string.length/1)
+
+Fim
+
+
+
+
+Idioma x não tem pipelines
+
+Os oleodutos existem há muito tempo, mas apenas em idiomas de nicho. Eles só se mudaram para o mainstream recentemente, e muitos idiomas populares ainda não suportam o conceito.
+
+A boa notícia é que pensar em transformações não requer uma sintaxe de linguagem específica: é mais uma filosofia de design. Você ainda constrói seu código como transformações, mas as escreve como uma série de tarefas:
+
+Const content = file.read (file_name);
+
+Const lines = find_matching_lines (conteúdo, padrão)
+
+Const resultado = truncate_lines (linhas)
+
+
+
+É um pouco mais tedioso, mas faz o trabalho.
+
+
+
+
+
+Juntando tudo
+
+
+Escrevemos cada uma das transformações individuais. Agora é hora de reuni -los todos em nossa função principal:
+
+Função-Pipelines/anagrams/lib/anagrams.ex
+
+Def anagrams_in (word) sim
+
+Palavra
+
+|> All_subsets_longer_than_three_characters ()
+
+|> As_unique_signatures ()
+
+|> Find_in_dictionary ()
+
+|> Group_by_length ()
+
+Fim
+
+
+
+Funciona? Vamos tentar:
+
+Iex (1)> anagrams.anagrams_in "lyvin"
+
+%{
+
+3 => ["Ivy", "lin", "nil", "yin"],
+
+4 => ["Inly", "Liny", "Viny"],
+
+5 => ["vinil"]
+
+}
+
+
+
+
+
+Por que isso é tão bom?
+
+
+Vejamos o corpo da função principal novamente:
+
+Palavra
+
+|> All_subsets_longer_than_three_characters ()
+
+|> As_unique_signatures ()
+
+|> Find_in_dictionary ()
+
+|> Group_by_length ()
+
+
+
+É simplesmente uma cadeia das transformações necessárias para atender aos nossos requisitos, cada um recebendo informações da transformação anterior e passando a saída para a seguinte. Isso chega o mais próximo possível do código alfabetizado.
+
+Mas há algo mais profundo também. Se o seu plano de fundo for uma programação orientada a objetos, seus reflexos exigem que você oculte dados, encapsulando-os dentro de objetos. Esses objetos conversam para frente e para trás, mudando o estado um do outro. Isso introduz muito acoplamento e é uma grande razão pela qual os sistemas OO podem ser difíceis de mudar.
+
+Dica 50 Não acumular estado; Passe por isso
+
+
+
+No modelo transformacional, viramos isso de cabeça para baixo. Em vez de pequenos pools de dados espalhados por todo o sistema, pense nos dados como um rio poderoso, um fluxo. Os dados se tornam um ponto para funcionalidade: um pipeline é uma sequência de código → dados → código → dados…. Os dados não estão mais vinculados a um grupo específico de funções, como estão em uma definição de classe. Em vez disso, é livre para representar o progresso que desdobra de nosso aplicativo, pois transforma suas entradas em suas saídas. Isso significa que podemos reduzir bastante o acoplamento: uma função pode ser usada (e reutilizada) em qualquer lugar que seus parâmetros correspondam à saída de alguma outra função.
+
+Sim, ainda há um grau de acoplamento, mas, em nossa experiência, é mais gerenciável que o estilo OO de comando e controle. E, se você estiver usando um idioma com verificação de tipo, receberá avisos de tempo de compilação ao tentar conectar duas coisas incompatíveis.
+
+
+
+
+
+E quanto ao manuseio de erros?
+
+
+Até agora, nossas transformações funcionaram em um mundo onde nada dá errado. Como podemos usá -los no mundo real? Se pudermos construir apenas cadeias lineares, como podemos adicionar toda essa lógica condicional necessária para verificação de erros?
+
+Existem muitas maneiras de fazer isso, mas todas elas dependem de uma convenção básica: nunca passamos por valores brutos entre transformações. Em vez disso, embrulhamos -os em uma estrutura de dados (ou tipo) que também nos diz se o valor contido é válido. Em Haskell, por exemplo, esse invólucro é chamado talvez. Em F# e Scala, é a opção.
+
+Como você usa esse conceito é específico da linguagem. Em geral, porém, existem duas maneiras básicas de escrever o código: você pode lidar com a verificação de erros dentro de suas transformações ou fora delas.
+
+Elixir, que usamos até agora, não tem esse suporte incorporado. Para nossos propósitos, isso é uma coisa boa, à medida que chegamos a
+Mostre uma implementação desde o início. Algo semelhante deve funcionar na maioria dos outros idiomas.
+
+
+
+
+
+Primeiro, escolha uma representação
+
+
+Precisamos de uma representação para o nosso invólucro (a estrutura de dados que carrega um valor ou uma indicação de erro). Você pode usar estruturas para isso, mas o Elixir já tem uma convenção bastante forte: as funções tendem a retornar uma tupla contendo {: ok, valor} ou {: erro, razão}. Por exemplo, o arquivo.open retorna: OK e um processo de IO ou: erro e código de razão:
+
+Iex (1)> file.open ("/etc/passwd")
+
+{: Ok, #pid <0,109.0>}
+
+Iex (2)> file.open ("/etc/wombat")
+
+{: Erro, eneent}
+
+
+
+Usaremos o: OK/: ERRO TUPLE como nosso invólucro ao passar as coisas através de um pipeline.
+
+
+
+
+
+Em seguida, lide com ele dentro de cada transformação
+
+
+Vamos escrever uma função que retorne todas as linhas em um arquivo que contém uma determinada string, truncada aos 20 primeiros caracteres. Queremos escrevê -lo como uma transformação, para que a entrada seja um nome de arquivo e uma string a ser combinada, e a saída será uma: Tupla: OK com uma lista de linhas ou uma tupla: erro com algum tipo de motivo. A função de nível superior deve parecer algo assim:
+
+Função-Pipelines/anagrams/lib/grep.ex
+
+Def find_all (file_name, padrão)
+
+File.read (file_name)
+
+|> Find_matching_lines (padrão)
+
+|> Truncate_lines ()
+
+Fim
+
+
+
+Não há erro explícito de verificação aqui, mas se alguma etapa do pipeline retornar uma tupla de erro, o pipeline retornará esse erro sem executar as funções a seguir. [42] Fazemos isso usando a correspondência de padrões do Elixir:
+
+Função-Pipelines/anagrams/lib/grep.ex
+
+DEFP find_matching_lines ({: ok, content}, padrão)
+
+Conteúdo
+
+|> String.split (~ r/\ n/)
+
+|> Enum.filter (& string.match? (& 1, padrão))
+
+|> Ok_unless_empty ()
+
+Fim
+
+​
+
+DEFP find_matching_lines (erro, _), faça: erro
+
+​
+
+# ----------
+
+​
+
+DEFP truncate_lines ({: ok, linhas}) fazer
+
+Linhas
+
+|> Enum.map (& string.slice (& 1, 0, 20))
+
+|> Ok ()
+
+Fim
+
+​
+
+DEFP truncate_lines (erro), faça: erro
+
+​
+
+# ----------
+
+​
+
+DEFP ok_unless_empty ([]), faça: erro ("nada encontrado")
+
+DEFP ok_unless_empty (resultado), faça: ok (resultado)
+
+​
+
+DEFP ok (resultado), faça: {: ok, resultado}
+
+Erro DEFP (Razão), faça: {: Erro, Razão}
+
+
+
+Dê uma olhada na função find_matching_lines. Se seu primeiro parâmetro for um: ok tupla, ele usa o conteúdo nessa tupla para encontrar linhas que correspondam ao padrão. No entanto, se o primeiro parâmetro não for um: ok tuple, a segunda versão da função é executada, que apenas retorna esse parâmetro. Dessa forma, a função simplesmente encaminha um erro no pipeline. O mesmo se aplica a truncate_lines.
+
+Podemos brincar com isso no console:
+
+Iex> grep.find_all "/etc/passwd", ~ r/www/
+
+{: Ok, ["_www:*: 70: 70: World W", "_wwwroxy:*: 252: 252:"]}
+
+
+
+Iex> grep.find_all "/etc/passwd", ~ r/wombat/
+
+{: Erro, "nada encontrado"}
+
+Iex> grep.find_all "/etc/koala", ~ r/www/
+
+{: Erro, eneent}
+
+
+
+Você pode ver que um erro em qualquer lugar do pipeline se torna imediatamente o valor do pipeline.
+
+
+
+
+
+Ou manuseie -o no pipeline
+
+
+Você pode estar olhando para as funções find_matching_lines e truncate_lines pensando que movemos o ônus de lidar com o manuseio das transformações. Você estaria certo. Em um idioma que usa padrões correspondentes em chamadas de função, como o Elixir, o efeito é diminuído, mas ainda é feio.
+
+Seria bom se Elixir tivesse uma versão do operador de pipeline |> que sabia sobre o: OK/: Erro tuplas e que execução curta-circuitada quando ocorreu um erro. [43] Mas o fato de não nos permitir adicionar algo semelhante e de uma maneira aplicável a vários outros idiomas.
+
+O problema que enfrentamos é que, quando ocorre um erro, não queremos executar o código mais abaixo do pipeline e que não queremos que esse código saiba que isso está acontecendo. Isso significa que precisamos adiar as funções de execução do pipeline até sabermos que as etapas anteriores do pipeline foram bem -sucedidas. Para fazer isso, precisaremos alterá -los das chamadas de função para valores de função que podem ser chamados posteriormente. Aqui está uma implementação:
+
+Pipelines de função/anagramas/lib/grep1.ex
+
+Defmodule grep1 do
+
+​
+
+Def e_then ({: ok, valor}, func), do: func. (Valor)
+
+Def e_then (qualquer coisa_else, _func), faça: qualquer coisa_else
+
+​
+
+Def find_all (file_name, padrão)
+
+File.read (file_name)
+
+|> E_then (& find_matching_lines (& 1, padrão))
+
+|>
+e_then (& truncate_lines (& 1))
+
+Fim
+
+​
+
+DEFP find_matching_lines (conteúdo, padrão)
+
+Conteúdo
+
+|> String.split (~ r/\ n/)
+
+|> Enum.filter (& string.match? (& 1, padrão))
+
+|> Ok_unless_empty ()
+
+Fim
+
+​
+
+DEFP truncate_lines (linhas) fazem
+
+Linhas
+
+|> Enum.map (& string.slice (& 1, 0, 20))
+
+|> Ok ()
+
+Fim
+
+​
+
+​
+
+DEFP ok_unless_empty ([]), faça: erro ("nada encontrado")
+
+DEFP ok_unless_empty (resultado), faça: ok (resultado)
+
+​
+
+DEFP ok (resultado), faça: {: ok, resultado}
+
+Erro DEFP (Razão), faça: {: Erro, Razão}
+
+Fim
+
+
+
+A função And_HeThen é um exemplo de uma função de ligação: é necessário um valor embrulhado em algo e aplica uma função a esse valor, retornando um novo valor embrulhado. O uso da função And_Hesten no pipeline exige um pouco de pontuação extra, porque o Elixir precisa ser instruído a converter chamadas de função em valores de função, mas esse esforço extra é compensado pelo fato de as funções de transformação se tornarem simples: cada um apenas assume um valor (e qualquer parâmetros extras) e retorna {: ok, new_value} ou {: erro: razão, razão}.
+
+
+
+
+
+Transformações transformam a programação
+
+
+Pensar no código como uma série de transformações (aninhadas) pode ser uma abordagem libertadora para a programação. Demora um pouco para se acostumar, mas depois de desenvolver o hábito, você encontrará seu código se torna mais limpo, suas funções mais curtas e seus designs mais lisonjeados.
+
+Experimente.
+
+
+
+
+
+Seções relacionadas incluem
+
+
+Tópico 8, a essência do bom design
+
+Tópico 17, jogos de shell
+
+Tópico 26, como equilibrar recursos
+
+Tópico 28, dissociação
+
+Tópico 35, atores e processos
+
+
+
+
+
+Exercícios
+
+
+Exercício 21 (resposta possível)
+
+Você pode expressar os seguintes requisitos como uma transformação de nível superior? Isto é, para cada um, identifique a entrada e a saída.
+
+O imposto de envio e vendas é adicionado a um pedido
+
+Seu aplicativo carrega informações de configuração de um arquivo nomeado
+
+Alguém faz login em um aplicativo da web
+
+
+
+Exercício 22 (resposta possível)
+
+Você identificou a necessidade de validar e converter um campo de entrada de uma string em um número inteiro entre 18 e 150. A transformação geral é descrita por
+
+Conteúdo de campo como string
+
+→ [Validar e converter]
+
+→ {: ok, valor} | {: erro, razão}
+
+
+
+Escreva as transformações individuais que compõem a validação e convertem.
+
+Exercício 23 (possível resposta)
+
+No idioma X não tem pipelines que escrevemos:
+
+Const content = file.read (file_name);
+
+Const lines = find_matching_lines (conteúdo, padrão)
+
+Const resultado = truncate_lines (linhas)
+
+
+
+Muitas pessoas escrevem o código OO encadeando chamadas de método e podem ser tentadas a escrever isso como algo como:
+
+Const resultado = content_of (file_name)
+
+.Find_matching_lines (padrão)
+
+.Truncate_Lines ()
+
+
+
+Qual é a diferença entre essas duas peças de código? Qual você acha que preferimos?
+
+
+
+
+
+Tópico 31
+
+Imposto sobre herança
+
+
+
+
+Você queria uma banana, mas o que você conseguiu era um gorila segurando a banana e toda a selva.
+
+
+
+Joe Armstrong
+
+
+
+Você programa em uma linguagem orientada a objetos? Você usa herança?
+
+Se sim, pare! Provavelmente não é o que você quer fazer.
+
+Vamos ver o porquê.
+
+
+
+
+
+Alguns antecedentes
+
+
+A herança apareceu pela primeira vez em Simula 67 em 1969. Foi uma solução elegante para o problema de filitar vários tipos de eventos na mesma lista. A abordagem Simula era usar algo chamado classes de prefixo. Você poderia escrever algo assim:
+
+Link Class Car;
+
+... Implementação de carro
+
+​
+
+Link Class Bicycle;
+
+... Implementação de bicicleta
+
+
+
+O link é uma classe de prefixo que adiciona a funcionalidade das listas vinculadas. Isso permite adicionar carros e bicicletas à lista de coisas que aguardam (digamos) um semáforo. Na terminologia atual, o link seria uma classe pai.
+
+O modelo mental usado pelos programadores da Simula foi que os dados de instância e a implementação do link de classe foram antecipados à implementação do Classes Car and Bicycle. A parte do link era quase vista como um recipiente que carregava carros e bicicletas. Isso lhes deu uma forma de polimorfismo: carros e bicicletas implementaram a interface do link porque ambos continham o código do link.
+
+Depois que Simula veio Smalltalk. Alan Kay, um dos criadores de SmallTalk, descreve em uma resposta Quora de 2019 [44] Por que o SmallTalk tem herança:
+
+Então, quando eu projetei SmallTalk-72-e foi uma brincadeira por diversão enquanto pensava em SmallTalk-71-achei que seria divertido usar sua dinâmica semelhante a Lisp para fazer experimentos com "programação diferencial" (significando: várias maneiras de realizar "isso é assim, exceto").
+
+
+
+Esse
+está subclassificando puramente para o comportamento.
+
+Esses dois estilos de herança (que na verdade tinham uma quantia justa em comum) se desenvolveram nas décadas seguintes. A abordagem Simula, que sugeriu a herança era uma maneira de combinar tipos, continuou em idiomas como C ++ e Java. A Escola de Smalltalk, onde a herança era uma organização dinâmica de comportamentos, foi vista em idiomas como Ruby e JavaScript.
+
+Então, agora estamos diante de uma geração de desenvolvedores de OO que usam herança por um dos dois motivos: eles não gostam de digitar ou gostam de tipos.
+
+Aqueles que não gostam de digitar salvam os dedos usando a herança para adicionar funcionalidade comum de uma classe base nas classes infantis: o usuário da classe e o produto de classe são subclasses do ActiveRecord :: Base.
+
+Aqueles que gostam de tipos usam herança para expressar o relacionamento entre as classes: um carro é um veículo.
+
+Infelizmente, ambos os tipos de herança têm problemas.
+
+
+
+
+
+Problemas usando a herança para compartilhar código
+
+
+A herança é o acoplamento. A classe infantil não apenas está acoplada aos pais, aos pais e assim por diante, mas o código que usa a criança também é acoplado a todos os ancestrais. Aqui está um exemplo:
+
+Veículo de classe
+
+Def Initialize
+
+@Speed = 0
+
+Fim
+
+Def Stop
+
+@Speed = 0
+
+Fim
+
+Def move_at (velocidade)
+
+@Speed = velocidade
+
+Fim
+
+Fim
+
+​
+
+Carro de aula <veículo
+
+Def info
+
+"Estou dirigindo carro em#{@speed}"
+
+Fim
+
+Fim
+
+​
+
+# Código de nível superior
+
+My_ride = car.new
+
+My_ride.move_at (30)
+
+
+
+Quando o nível superior chama my_car.move_at, o método que está sendo chamado está no veículo, o pai do carro.
+
+Agora, o desenvolvedor responsável pelo veículo altera a API, então move_at se torna set_velocity, e a variável de instância @speed se torna @velocity.
+
+Espera -se que uma mudança de API quebre os clientes da aula de veículos. Mas o nível superior não é: no que diz respeito a estar usando um carro. O que a classe de carros faz em termos de implementação não é a preocupação do código de nível superior, mas ainda quebra.
+
+Da mesma forma, o nome de uma variável de instância é puramente um detalhe de implementação interna, mas quando o veículo também muda (silenciosamente) quebra o carro.
+
+Tanto acoplamento.
+
+
+
+
+
+Problemas usando herança para construir tipos
+
+
+
+
+Algumas pessoas vêem a herança como uma maneira de definir novos tipos. Seu diagrama de design favorito mostra hierarquias de classe. Eles veem os problemas da maneira como os cientistas vitorianos viam a natureza, como algo a ser dividido em categorias.
+
+
+
+Infelizmente, esses diagramas logo se transformam em monstruosidades de cobertura de parede, a camada de camada adicionada adicionou-se para expressar a menor nuance de diferenciação entre as classes. Essa complexidade adicional pode tornar o aplicativo mais quebradiço, pois as alterações podem ondular para cima e para baixo em muitas camadas.
+
+Pior ainda, porém, é a questão de herança múltipla. Um carro pode ser um tipo de veículo, mas também pode ser um tipo de ativo, segurado, loancollateral e assim por diante. Modelar isso corretamente precisaria de herança múltipla.
+
+O C ++ deu à herança múltipla um nome ruim nos anos 90 por causa de alguma semântica de desambiguação questionável. Como resultado, muitos idiomas atuais do OO não o oferecem. Portanto, mesmo se você estiver satisfeito com árvores do tipo complexo, não poderá modelar seu domínio com precisão de qualquer maneira.
+
+Dica 51 Não pague imposto sobre herança
+
+
+
+
+
+As alternativas são melhores
+
+
+Vamos sugerir três técnicas que significam que você nunca deve precisar usar a herança novamente:
+
+Interfaces e protocolos
+
+Delegação
+
+Mixins e características
+
+
+
+
+
+Interfaces e protocolos
+
+
+A maioria dos idiomas OO permite especificar que uma classe implementa um ou mais conjuntos de comportamentos. Você poderia dizer, por exemplo, que uma classe de carro implementa o comportamento dirigível e o comportamento localizado. A sintaxe usada para fazer isso varia: em Java, pode ser assim:
+
+Public Classe Carro implementos Drivable, Localizável {
+
+​
+
+// Código para carro de classe. Este código deve incluir
+
+// A funcionalidade de ambos dirigíveis
+
+// e localizável
+
+​
+
+}
+
+
+
+Drivável e localizado são o que Java chama de interfaces; Outros idiomas os chamam de protocolos, e alguns os chamam de características (embora não seja isso que chamaremos uma característica mais tarde).
+
+As interfaces são definidas assim:
+
+Interface pública Drivable {
+
+Duplo getspeed ();
+
+Void stop ();
+
+}
+
+​
+
+Interface pública localizável () {
+
+Coordenar getLocation ();
+
+Boolean LocationIsValid ();
+
+}
+
+
+
+Essas declarações não criam nenhum código: eles simplesmente dizem que qualquer classe que implementa o Drivable deve implementar os dois métodos que getize e param, e uma classe que é
+Localizável deve implementar o GetLocation e o LocationIsValid. Isso significa que nossa definição anterior de classe de carro só será válida se incluir todos esses quatro métodos.
+
+O que torna as interfaces e protocolos tão poderosos é que podemos usá -los como tipos, e qualquer classe que implementa a interface apropriada será compatível com esse tipo. Se o carro e o telefone implementarem localizáveis, poderíamos armazenar ambos em uma lista de itens localizáveis:
+
+List <Crocatable> itens = new ArrayList <> ();
+
+​
+
+Items.add (carro novo (...));
+
+Items.add (novo telefone (...));
+
+Items.add (carro novo (...));
+
+// ...
+
+
+
+Em seguida, podemos processar essa lista, com segurança, sabendo que todo item possui getLocation e LocationIsValid:
+
+Void PrintLocation (item localizável) {
+
+If (item.LocationIsValid () {
+
+Print (item.getLocation (). Asstring ());
+
+}
+
+​
+
+// ...
+
+​
+
+Items.ForEach (printLocation);
+
+
+
+Dica 52 prefere interfaces para expressar polimorfismo
+
+
+
+Interfaces e protocolos nos dão polimorfismo sem herança.
+
+
+
+
+
+Delegação
+
+
+A herança incentiva os desenvolvedores a criar classes cujos objetos têm um grande número de métodos. Se uma classe pai tiver 20 métodos e a subclasse quiser usar apenas dois deles, seus objetos ainda terão os outros 18 que estão por aí e chamáveis. A classe perdeu o controle de sua interface. Este é um problema comum - muitas estruturas de persistência e interface do usuário insistem que os componentes do aplicativo subclassem alguma classe base fornecida:
+
+Conta de classe <persistencebaseclass
+
+Fim
+
+
+
+A classe de conta agora carrega toda a API da classe de persistência. Em vez disso, imagine uma alternativa usando a delegação, como no exemplo a seguir:
+
+Conta de classe
+
+Def Initialize (...)
+
+@Repo = persister.for (self)
+
+Fim
+
+​
+
+Def Save
+
+@Repo.save ()
+
+Fim
+
+Fim
+
+
+
+Agora, expojamos nenhuma das API da estrutura aos clientes de nossa classe de conta: essa dissociação está quebrada agora. Mas há mais. Agora que não estamos mais restringidos pela API da estrutura que estamos usando, somos livres para criar a API de que precisamos. Sim, poderíamos fazer isso antes, mas sempre corremos o risco de que a interface que escrevemos possa ser ignorada e a API de persistência usada. Agora controlamos tudo.
+
+Dica 53 Delegado aos Serviços: Has-A Trumps Is-A
+
+
+
+De fato, podemos dar um passo adiante. Por que uma conta deve saber como se persistir? Não é seu trabalho saber e fazer cumprir as regras de negócios da conta?
+
+Conta de classe
+
+# Nada além de coisas de conta
+
+Fim
+
+​
+
+Accountrecord de classe
+
+# Envolve uma conta com a habilidade
+
+# Para ser buscado e armazenado
+
+Fim
+
+
+
+Agora estamos realmente dissociados, mas isso tem um custo. Estamos tendo que escrever mais código e, normalmente, alguns deles serão caldeiras: é provável que todas as nossas classes de registro precisem de um método de localização, por exemplo.
+
+Felizmente, é isso que mixins e traços fazem por nós.
+
+
+
+
+
+Mixins, características, categorias, extensões de protocolo,…
+
+
+Como setor, adoramos dar nomes de coisas. Muitas vezes, daremos a mesma coisa muitos nomes. Mais é melhor, certo?
+
+É com isso que estamos lidando quando olhamos para Mixins. A idéia básica é simples: queremos poder estender classes e objetos com nova funcionalidade sem usar a herança. Por isso, criamos um conjunto dessas funções, damos um nome a esse nome e, de alguma forma, estendemos uma classe ou objeto com eles. Nesse ponto, você criou uma nova classe ou objeto que combina os recursos do original e de todos os seus mixins. Na maioria dos casos, você poderá fazer essa extensão, mesmo que não tenha acesso ao código -fonte da classe que está estendendo.
+
+Agora, a implementação e o nome desse recurso variam entre os idiomas. Tenderemos a chamá-los de mixins aqui, mas realmente queremos que você pense nisso como um recurso agnóstico do idioma. O importante é a capacidade que todas essas implementações têm: mesclando a funcionalidade entre coisas existentes e coisas novas.
+
+Como exemplo, vamos voltar ao nosso exemplo AccountRecord. Quando o deixamos, um AccountRecord precisava saber sobre as contas e sobre nossa estrutura de persistência. Também precisava delegar todos os métodos na camada de persistência que queria expor ao mundo exterior.
+
+Mixins nos dão uma alternativa. Primeiro, poderíamos escrever um mixin que implementa (por exemplo) dois dos três dos métodos padrão do localizador. Poderíamos então adicioná -los ao Accountrecord como um mixin. E, enquanto escrevemos novas aulas para coisas persistentes, também podemos adicionar o mixin a elas:
+
+Mixin Commonfinders {
+
+​
+Def Find (id) {...}
+
+Def Findall () {...}
+
+Fim
+
+​
+
+A classe AccountRecord estende o BasicRecord com os Commonfinders
+
+Classe OrderRecord estende o Basicrecord com os Commonfinders
+
+
+
+Podemos levar isso muito mais longe. Por exemplo, todos sabemos que nossos objetos de negócios precisam de código de validação para impedir que dados ruins se infilizem a nossos cálculos. Mas exatamente o que queremos dizer com validação?
+
+Se levarmos uma conta, por exemplo, provavelmente existem muitas camadas diferentes de validação que poderiam ser aplicadas:
+
+Validando que uma senha de hash corresponde a inserida pelo usuário
+
+Validando os dados do formulário inseridos pelo usuário quando uma conta é criada
+
+Validando os dados do formulário inseridos por um administrador atualizando os detalhes do usuário
+
+Validando dados adicionados à conta por outros componentes do sistema
+
+Validando dados para consistência antes de serem persistidos
+
+
+
+Uma abordagem comum (e acreditamos que o ideal menos do que ideal) é agrupar todas as validações em uma única classe (o objeto de negócios/objeto de persistência) e depois adicionar sinalizadores para controlar qual fogo em que circunstâncias.
+
+Achamos que uma maneira melhor é usar o Mixins para criar classes especializadas para situações apropriadas:
+
+Classe AccountForCustomer estende a conta
+
+Com vorações de conta, conta -customervoridations
+
+​
+
+Classe AccountForAdmin estende a conta
+
+Com validações da conta, conta de válvulações de conta
+
+
+
+Aqui, ambas as classes derivadas incluem validações comuns a todos os objetos da conta. A variante do cliente também inclui validações apropriadas para as APIs voltadas para o cliente, enquanto a variante do administrador continha (presumivelmente menos restritiva) validações de administração.
+
+Agora, passando as instâncias do AccountForCustomer ou da AccountForAdmin, nosso código garante automaticamente que a validação correta seja aplicada.
+
+Dica 54 Use Mixins para compartilhar a funcionalidade
+
+
+
+
+
+A herança raramente é a resposta
+
+
+Demos uma rápida olhada em três alternativas à herança tradicional de classe:
+
+Interfaces e protocolos
+
+Delegação
+
+Mixins e características
+
+
+
+Cada um desses métodos pode ser melhor para você em diferentes circunstâncias, dependendo se sua meta está compartilhando informações do tipo, adicionando funcionalidade ou métodos de compartilhamento. Como em qualquer coisa na programação, procure usar a técnica que melhor expressa sua intenção.
+
+E tente não arrastar a selva inteira para o passeio.
+
+
+
+
+
+Seções relacionadas incluem
+
+
+Tópico 8, a essência do bom design
+
+Tópico 10, Ortogonalidade
+
+Tópico 28, dissociação
+
+
+
+
+
+Desafios
+
+
+Na próxima vez que você se subclasse, reserve um minuto para examinar as opções. Você pode alcançar o que deseja com interfaces, delegação e/ou mixins? Você pode reduzir o acoplamento fazendo isso?
+
+
+
+
+
+Tópico 32
+
+Configuração
+
+
+
+
+Que todas as suas coisas tenham seus lugares; Deixe cada parte do seu negócio ter seu tempo.
+
+
+
+Benjamin Franklin, treze virtudes, autobiografia
+
+
+
+Quando o código depende de valores que podem mudar após o lançamento do aplicativo, mantenha esses valores externos ao aplicativo. Quando seu aplicativo será executado em diferentes ambientes e, potencialmente, para diferentes clientes, mantenha os valores específicos do ambiente e do cliente fora do aplicativo. Dessa forma, você está parametrizando seu aplicativo; O código se adapta aos lugares em que é executado.
+
+Dica 55 Parametrize seu aplicativo usando configuração externa
+
+
+
+As coisas comuns que você provavelmente desejará colocar nos dados de configuração incluem:
+
+Credenciais para serviços externos (banco de dados, APIs de terceiros e assim por diante)
+
+Níveis de registro e destinos
+
+Nomes de porta, endereço IP, máquina e cluster que o aplicativo usa
+
+Parâmetros de validação específicos do ambiente
+
+Parâmetros definidos externamente, como taxas de imposto
+
+Detalhes de formatação específicos do site
+
+Chaves de licença
+
+
+
+Basicamente, procure qualquer coisa que você saiba que terá que mudar que você pode expressar fora do seu corpo principal de código e investir em algum balde de configuração.
+
+
+
+
+
+Configuração estática
+
+
+Muitas estruturas e alguns aplicativos personalizados mantêm a configuração em arquivos simples ou tabelas de banco de dados. Se as informações estiverem em arquivos planos, a tendência deve usar algum formato de texto simples pronta para uso. Atualmente, Yaml e JSON são populares para isso. Às vezes, os aplicativos escritos em linguagens de script usam arquivos de código de fonte de finalidade especiais, dedicados a conter apenas a configuração. Se as informações forem estruturadas e provavelmente serão alteradas pelo cliente (taxas de imposto sobre vendas, por exemplo), pode ser melhor armazená -las em uma tabela de banco de dados. E, é claro, você pode usar os dois, dividindo as informações de configuração de acordo com o uso.
+
+Qualquer que você use,
+A configuração é lida em seu aplicativo como uma estrutura de dados, normalmente quando o aplicativo é iniciado. Geralmente, essa estrutura de dados é tornada global, o pensamento é que isso facilita para qualquer parte do código chegar aos valores que ele mantém.
+
+Preferimos que você não faça isso. Em vez disso, embrulhe as informações de configuração por trás de uma API (fina). Isso separa seu código dos detalhes da representação da configuração.
+
+
+
+
+
+Configuração como serviço
+
+
+Embora a configuração estática seja comum, atualmente favorecemos uma abordagem diferente. Ainda queremos dados de configuração mantidos externos ao aplicativo, mas, em um arquivo ou banco de dados plano, gostaríamos de vê -lo armazenado atrás de uma API de serviço. Isso tem vários benefícios:
+
+Vários aplicativos podem compartilhar informações de configuração, com autenticação e controle de acesso limitando o que cada um pode ver
+
+Alterações de configuração podem ser feitas globalmente
+
+Os dados de configuração podem ser mantidos por meio de uma interface do usuário especializada
+
+Os dados de configuração se tornam dinâmicos
+
+
+
+Esse último ponto, que a configuração deve ser dinâmica, é fundamental à medida que avançamos em direção a aplicativos altamente disponíveis. A idéia de que deveríamos ter que parar e reiniciar um aplicativo para alterar um único parâmetro está irremediavelmente fora de contato com as realidades modernas. Usando um serviço de configuração, os componentes do aplicativo podem se registrar para notificações de atualizações nos parâmetros que eles usam, e o serviço pode enviar mensagens que contêm novos valores se e quando forem alterados.
+
+Qualquer que seja necessário, os dados de configuração acionam o comportamento de tempo de execução de um aplicativo. Quando os valores de configuração mudam, não há necessidade de reconstruir o código.
+
+
+
+
+
+Não escreva código DODO
+
+
+Sem configuração externa, seu código não é tão adaptável ou flexível quanto poderia ser. Isso é uma coisa ruim? Bem, aqui no mundo real, espécies que não se adaptam morrem.
+
+O Dodo não se adaptou à presença de humanos e seu gado na ilha das Maurícias, e rapidamente se extinguiu. [45] Foi a primeira extinção documentada de uma espécie na mão do homem.
+
+Não deixe seu projeto (ou sua carreira) seguir o caminho do Dodo.
+
+
+
+
+
+Seções relacionadas incluem
+
+
+Tópico 9, seco - os males de duplicação
+
+Tópico 14, idiomas de domínio
+
+Tópico 16, o poder do texto simples
+
+Tópico 28, dissociação
+
+
+
+
+Não exagere
+
+Na primeira edição deste livro, sugerimos o uso de configuração em vez de código de maneira semelhante, mas aparentemente deveria ter sido um pouco mais específico em nossas instruções. Qualquer conselho pode ser levado a extremos ou usado de maneira inadequada, então aqui estão algumas precauções:
+
+Não exagere. Um dos nossos primeiros clientes decidiu que todos os campos em seu aplicativo devem ser configuráveis. Como resultado, levou semanas para fazer a menor alteração, pois você precisava implementar o campo e todo o código de administrador para salvá -lo e editá -lo. Eles tinham cerca de 40.000 variáveis de configuração e um pesadelo de codificação em suas mãos.
+
+Não pressione as decisões para a configuração da preguiça. Se houver um debate genuíno sobre se um recurso deve funcionar dessa maneira ou aquilo, ou se deve ser a escolha dos usuários, experimente uma maneira e obtenha feedback sobre se a decisão foi boa.
+
+
+
+
+
+Notas de rodapé
+
+
+[37]
+
+Portanto, não é realmente uma lei. É mais como a boa ideia de Demeter.
+
+
+
+[38]
+
+https://media.pragprog.com/articles/jan_03_enbug.pdf
+
+
+
+[39]
+
+Sim, sabemos que o Ruby já tem esse recurso com sua função AT_EXIT.
+
+
+
+[40]
+
+https://media.pragprog.com/titles/tpp20/code/event/rxcommon/logger.js
+
+
+
+[41]
+
+Parece que o primeiro uso dos caracteres |> como um tubo data de 1994, em uma discussão sobre o idioma Isobelle/ml, arquivado em https://blogs.msdn.microsoft.com/dsyme/2011/05/17/archeological-semiotics-the-birth-the-pipline-sambol--1994/17/archeological-semiotics-the-birth-the-pipline-sambol--1944/17/17/archeological-semiotics-the-birth-the-pipline-sambol--1994/17/17/archeological-semióticos
+
+
+
+[42]
+
+Tomamos uma liberdade aqui. Tecnicamente, executamos as seguintes funções. Nós simplesmente não executamos o código neles.
+
+
+
+[43]
+
+Na verdade, você pode adicionar esse operador ao ELIXIR usando sua instalação de macro; Um exemplo disso é a Mônada Biblioteca em Hex. Você também pode usar o Elixir's com o construto, mas depois perde muito do senso de escrever transformações que recebe com os pipelines.
+
+
+
+[44]
+
+https://www.quora.com/what-does-alan-kay-think-about-neritance-in-objecject-oriented-programing
+
+
+
+[45]
+
+Não ajudou que os colonos vencessem os pássaros plácidos (leia -se: estúpidos) até a morte com clubes para o esporte.
+
+
+
+
+
+Copyright © 2020 Pearson Education, Inc.
