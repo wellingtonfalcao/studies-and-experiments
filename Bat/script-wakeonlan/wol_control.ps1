@@ -1,17 +1,23 @@
 # ============================================
-# Wake-On-LAN + Desligamento + Verificacao OMV
+# Wake-On-LAN + Desligamento + Verificacao OMV + Terminal SSH
 # ============================================
 
-# Author: Wellington Albuquerque Falcão
-# Version: 0.2
+# Author: Wellington Albuquerque Falcao
+# Version: 0.9
 # Date: 10/22/2025
-# Contact: wellingtonfalcao@gmail.com
 
 # ---- CONFIGURACOES ----
 $macAddress = "74-D0-2B-CC-77-7F"
 $ipAddress  = "192.168.31.40"
 $hostname   = "FALCON-NAS"
 $username   = "root"
+
+# ---- VERIFICAR DEPENDENCIAS ----
+if (-not (Get-Module -ListAvailable -Name Posh-SSH)) {
+    Write-Host "Modulo Posh-SSH nao encontrado. Instalando..."
+    Install-Module -Name Posh-SSH -Scope CurrentUser -Force
+}
+Import-Module Posh-SSH
 
 # ---- TESTE DE CONEXAO ----
 function Test-Online {
@@ -22,35 +28,33 @@ function Test-Online {
 # ---- WAKE-ON-LAN ----
 function Send-WakeOnLan {
     param ([string]$mac, [string]$subnetBroadcast="192.168.31.255")
-
     $macClean = $mac -replace '[-:]', ''
     $macBytes = @()
     for ($i = 0; $i -lt 12; $i += 2) { 
         $macBytes += [byte]::Parse($macClean.Substring($i,2),'HexNumber') 
     }
-
     $packet = [byte[]](@(0xFF)*6 + ($macBytes*16))
-
     $udp = New-Object System.Net.Sockets.UdpClient
     $udp.EnableBroadcast = $true
     $udp.Connect([System.Net.IPAddress]::Parse($subnetBroadcast),9)
     [void]$udp.Send($packet,$packet.Length)
     $udp.Close()
-
     Write-Host "Pacote WOL enviado para $mac ($subnetBroadcast:9)"
 }
 
 # ---- DESLIGAMENTO VIA SSH COM CONFIRMACAO ----
 function Remote-ShutdownSSH {
-    param([string]$remoteIP, [string]$user)
-
+    param([string]$remoteIP, [string]$user, [string]$password)
     Write-Host "Tentando desligar $remoteIP via SSH..."
     try {
-        $sshCommand = "$user@$remoteIP shutdown -h now"
-        Start-Process ssh -ArgumentList $sshCommand -Wait
+        $securePass = ConvertTo-SecureString $password -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential ($user, $securePass)
+        $session = New-SSHSession -ComputerName $remoteIP -Credential $cred -AcceptKey
+        Invoke-SSHCommand -SessionId $session.SessionId -Command "shutdown -h now"
+        Remove-SSHSession -SessionId $session.SessionId
 
         # Aguarda o host desligar
-        $timeout = 60  # tempo maximo de espera em segundos
+        $timeout = 60
         $elapsed = 0
         while ($elapsed -lt $timeout) {
             if (-not (Test-Online -ip $remoteIP)) {
@@ -68,13 +72,14 @@ function Remote-ShutdownSSH {
 
 # ---- CHECAGEM DO SERVICO OMV ----
 function Check-OMVService {
-    param([string]$remoteIP, [string]$user)
-
+    param([string]$remoteIP, [string]$user, [string]$password)
     try {
-        $sshArgs = "$user@$remoteIP systemctl is-active openmediavault-engined"
-        $status = ssh $sshArgs 2>$null | Out-String
-        $status = $status.Trim()  # remove espaços e quebras de linha
-        if ($status -eq "active") { return $true } else { return $false }
+        $securePass = ConvertTo-SecureString $password -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential ($user, $securePass)
+        $session = New-SSHSession -ComputerName $remoteIP -Credential $cred -AcceptKey
+        $result = Invoke-SSHCommand -SessionId $session.SessionId -Command "systemctl is-active openmediavault-engined"
+        Remove-SSHSession -SessionId $session.SessionId
+        return $result.Output.Trim() -eq "active"
     } catch {
         return $false
     }
@@ -92,6 +97,18 @@ function Wait-ForOnline {
     return $false
 }
 
+# ---- ESPERA O SERVICO OMV FICAR ATIVO ----
+function Wait-ForOMVActive {
+    param([string]$remoteIP, [string]$user, [string]$password, [int]$timeout=60)
+    $elapsed = 0
+    while ($elapsed -lt $timeout) {
+        if (Check-OMVService -remoteIP $remoteIP -user $user -password $password) { return $true }
+        Start-Sleep -Seconds 5
+        $elapsed += 5
+    }
+    return $false
+}
+
 # ---- LOOP DO MENU ----
 do {
     Clear-Host
@@ -101,12 +118,18 @@ do {
 
     if (Test-Online -ip $ipAddress) {
         Write-Host "Status atual: ONLINE ($ipAddress)"
-        Start-Sleep -Seconds 15  # espera para o OMV carregar
-        if (Check-OMVService -remoteIP $ipAddress -user $username) {
+
+        $password = Read-Host -AsSecureString "Digite a senha de $username@$ipAddress para verificar status do OMV"
+        $plainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+            [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
+        )
+
+        if (Check-OMVService -remoteIP $ipAddress -user $username -password $plainPassword) {
             Write-Host "Servico OMV: ATIVO"
         } else {
             Write-Host "Servico OMV: INATIVO"
         }
+
     } else {
         Write-Host "Status atual do NAS: OFFLINE ($ipAddress)"
         Write-Host "Servico OMV: Indisponivel"
@@ -115,9 +138,10 @@ do {
     Write-Host ""
     Write-Host "1. Ligar NAS ($hostname)"
     Write-Host "2. Desligar NAS ($hostname)"
-    Write-Host "3. Sair da Aplicacao"
+    Write-Host "3. Acessar terminal SSH ($hostname)"
+    Write-Host "4. Sair da Aplicacao"
     Write-Host "============================="
-    $choice = Read-Host "Escolha uma opcao (1-3)"
+    $choice = Read-Host "Escolha uma opcao (1-4)"
 
     switch ($choice) {
         "1" { 
@@ -125,8 +149,8 @@ do {
             Write-Host "Ligando $hostname..."
             if (Wait-ForOnline -ip $ipAddress -timeout 30) {
                 Write-Host "$hostname esta ONLINE"
-                Start-Sleep -Seconds 15  # espera para o OMV carregar
-                if (Check-OMVService -remoteIP $ipAddress -user $username) {
+                # Espera o serviço OMV ficar ativo
+                if (Wait-ForOMVActive -remoteIP $ipAddress -user $username -password $plainPassword -timeout 60) {
                     Write-Host "Servico OMV: ATIVO"
                 } else {
                     Write-Host "Servico OMV: INATIVO"
@@ -136,11 +160,15 @@ do {
             }
         }
         "2" { 
-            Remote-ShutdownSSH -remoteIP $ipAddress -user $username
-            # Reinicia o menu automaticamente após desligar
+            Remote-ShutdownSSH -remoteIP $ipAddress -user $username -password $plainPassword
         }
-        "3" { Write-Host "Desligando..." }
+        "3" {
+            # Abrir terminal SSH interativo
+            Write-Host "Abrindo terminal SSH para $hostname..."
+            Start-Process "ssh.exe" -ArgumentList "$username@$ipAddress"
+        }
+        "4" { Write-Host "Desligando aplicacao..." }
         default { Write-Host "Opcao invalida." }
     }
 
-} while ($choice -ne "3")
+} while ($choice -ne "4")
