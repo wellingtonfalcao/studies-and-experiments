@@ -1,5 +1,5 @@
 # ============================================
-# Wake-On-LAN + Desligamento + Verificacao OMV + Terminal SSH + Agendamento
+# Wake-On-LAN + Desligamento + Verificacao OMV + Agendamento
 # ============================================
 
 # Author: Wellington Albuquerque Falcão
@@ -11,13 +11,11 @@ $macAddress = "74-D0-2B-CC-77-7F"
 $ipAddress  = "192.168.31.40"
 $hostname   = "FALCON-NAS"
 $username   = "root"
-
-# ---- VARIAVEIS DE AGENDAMENTO ----
-$shutdownSchedule = $null
+$shutdownScheduleFile = "$env:TEMP\wol_shutdown_schedule.txt"
 
 # ---- VERIFICAR DEPENDENCIAS ----
 if (-not (Get-Module -ListAvailable -Name Posh-SSH)) {
-    Write-Host "Modulo Posh-SSH nao encontrado. Instalando..."
+    Write-Host "Modulo Posh-SSH nao encontrado. Instalando..." -ForegroundColor Yellow
     Install-Module -Name Posh-SSH -Scope CurrentUser -Force
 }
 Import-Module Posh-SSH
@@ -42,13 +40,13 @@ function Send-WakeOnLan {
     $udp.Connect([System.Net.IPAddress]::Parse($subnetBroadcast),9)
     [void]$udp.Send($packet,$packet.Length)
     $udp.Close()
-    Write-Host "Pacote WOL enviado para $mac ($subnetBroadcast:9)"
+    Write-Host "Pacote WOL enviado para $mac ($subnetBroadcast:9)" -ForegroundColor Green
 }
 
 # ---- DESLIGAMENTO VIA SSH COM CONFIRMACAO ----
 function Remote-ShutdownSSH {
     param([string]$remoteIP, [string]$user, [string]$password)
-    Write-Host "Tentando desligar $remoteIP via SSH..."
+    Write-Host "Tentando desligar $remoteIP via SSH..." -ForegroundColor Cyan
     try {
         $securePass = ConvertTo-SecureString $password -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential ($user, $securePass)
@@ -61,15 +59,15 @@ function Remote-ShutdownSSH {
         $elapsed = 0
         while ($elapsed -lt $timeout) {
             if (-not (Test-Online -ip $remoteIP)) {
-                Write-Host "$remoteIP foi desligado com sucesso!"
+                Write-Host "$remoteIP foi desligado com sucesso!" -ForegroundColor Green
                 return
             }
             Start-Sleep -Seconds 2
             $elapsed += 2
         }
-        Write-Host "$remoteIP nao desligou dentro do timeout."
+        Write-Host "$remoteIP nao desligou dentro do timeout." -ForegroundColor Yellow
     } catch {
-        Write-Host "Falha ao desligar via SSH: $($_.Exception.Message)"
+        Write-Host "Falha ao desligar via SSH: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
@@ -100,134 +98,111 @@ function Wait-ForOnline {
     return $false
 }
 
-# ---- AGENDAR DESLIGAMENTO VIA SSH ----
-function Schedule-ShutdownSSH {
-    param([string]$remoteIP, [string]$user, [string]$password)
-    $hora = Read-Host "Digite o horario de desligamento no formato HH:MM (24h)"
-    try {
-        $securePass = ConvertTo-SecureString $password -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential ($user, $securePass)
-        $session = New-SSHSession -ComputerName $remoteIP -Credential $cred -AcceptKey
-        Invoke-SSHCommand -SessionId $session.SessionId -Command "shutdown -h $hora"
-        Remove-SSHSession -SessionId $session.SessionId
+# ---- AGENDAMENTO DE DESLIGAMENTO ----
+function Schedule-Shutdown {
+    param([string]$time)
+    Set-Content -Path $shutdownScheduleFile -Value $time
+    Write-Host "!!! Agendamento de desligamento definido para $time !!!" -ForegroundColor Magenta
+}
 
-        $script:shutdownSchedule = $hora
-        Write-Host "Desligamento agendado com sucesso para $hora"
-    } catch {
-        Write-Host "Falha ao agendar desligamento: $($_.Exception.Message)"
+function Cancel-Shutdown {
+    if (Test-Path $shutdownScheduleFile) {
+        Remove-Item $shutdownScheduleFile
+        Write-Host "Agendamento de desligamento cancelado com sucesso!" -ForegroundColor DarkMagenta
     }
 }
 
-# ---- CANCELAR AGENDAMENTO DE DESLIGAMENTO ----
-function Cancel-ShutdownSchedule {
-    param([string]$remoteIP, [string]$user, [string]$password)
-    if (-not $shutdownSchedule) {
-        Write-Host "Nenhum desligamento agendado."
-        return
+function Get-ScheduledShutdown {
+    if (Test-Path $shutdownScheduleFile) {
+        return Get-Content $shutdownScheduleFile
     }
-    try {
-        $securePass = ConvertTo-SecureString $password -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential ($user, $securePass)
-        $session = New-SSHSession -ComputerName $remoteIP -Credential $cred -AcceptKey
-        Invoke-SSHCommand -SessionId $session.SessionId -Command "shutdown -c"
-        Remove-SSHSession -SessionId $session.SessionId
-
-        $script:shutdownSchedule = $null
-        Write-Host "Agendamento de desligamento cancelado com sucesso."
-    } catch {
-        Write-Host "Falha ao cancelar desligamento: $($_.Exception.Message)"
-    }
+    return $null
 }
 
-# ---- ACESSO AO TERMINAL SSH ----
-function SSH-Terminal {
+# ---- ACESSO SSH INTERATIVO ----
+function SSH-Access {
     param([string]$remoteIP, [string]$user, [string]$password)
-    Write-Host "Abrindo terminal SSH para $remoteIP..."
     try {
         $securePass = ConvertTo-SecureString $password -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential ($user, $securePass)
-        $session = New-SSHSession -ComputerName $remoteIP -Credential $cred -AcceptKey
-        Invoke-SSHCommand -SessionId $session.SessionId -Command "bash" -Interactive
-        Remove-SSHSession -SessionId $session.SessionId
+        Write-Host "Conectando via SSH a $remoteIP..." -ForegroundColor Cyan
+        Start-Process ssh -ArgumentList "$user@$remoteIP" -NoNewWindow -Wait
     } catch {
-        Write-Host "Falha ao abrir terminal SSH: $($_.Exception.Message)"
+        Write-Host "Falha ao abrir SSH: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
 # ---- LOOP DO MENU ----
 do {
     Clear-Host
-    Write-Host "============================="
-    Write-Host "   Wake-on-LAN / Power Menu"
-    Write-Host "============================="
+    Write-Host "=============================" -ForegroundColor Cyan
+    Write-Host "   Wake-on-LAN / Power Menu" -ForegroundColor Cyan
+    Write-Host "=============================" -ForegroundColor Cyan
+
+    $scheduledShutdown = Get-ScheduledShutdown
+    if ($scheduledShutdown) {
+        Write-Host ">>> Horario de desligamento agendado: $scheduledShutdown <<<" -ForegroundColor Magenta
+    }
 
     if (Test-Online -ip $ipAddress) {
-        Write-Host "Status atual: ONLINE ($ipAddress)"
+        Write-Host "Status atual: ONLINE ($ipAddress)" -ForegroundColor Green
+
         $password = Read-Host -AsSecureString "Digite a senha de $username@$ipAddress para verificar status do OMV"
         $plainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
             [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
         )
 
         if (Check-OMVService -remoteIP $ipAddress -user $username -password $plainPassword) {
-            Write-Host "Servico OMV: ATIVO"
+            Write-Host "Servico OMV: ATIVO" -ForegroundColor Cyan
         } else {
-            Write-Host "Servico OMV: INATIVO"
+            Write-Host "Servico OMV: INATIVO" -ForegroundColor Yellow
         }
-    } else {
-        Write-Host "Status atual do NAS: OFFLINE ($ipAddress)"
-        Write-Host "Servico OMV: Indisponivel"
-    }
 
-    if ($shutdownSchedule) {
-        Write-Host ""
-        Write-Host "!!! Desligamento agendado para: $shutdownSchedule !!!"
+    } else {
+        Write-Host "Status atual do NAS: OFFLINE ($ipAddress)" -ForegroundColor Red
+        Write-Host "Servico OMV: Indisponivel" -ForegroundColor DarkGray
     }
 
     Write-Host ""
-    Write-Host "1. Ligar NAS ($hostname)"
-    Write-Host "2. Desligar NAS ($hostname)"
-    Write-Host "3. Sair da Aplicacao"
-    Write-Host "4. Acessar terminal SSH ($hostname)"
-    Write-Host "5. Agendar desligamento ($hostname)"
-
-    if ($shutdownSchedule) {
-        Write-Host "6. Cancelar agendamento de desligamento"
-    }
-
-    Write-Host "============================="
-    $choice = Read-Host "Escolha uma opcao (1-6)"
+    Write-Host "1. Ligar NAS ($hostname)" -ForegroundColor White
+    Write-Host "2. Desligar NAS ($hostname)" -ForegroundColor White
+    Write-Host "3. Acessar terminal SSH" -ForegroundColor White
+    Write-Host "4. Agendar desligamento" -ForegroundColor White
+    if ($scheduledShutdown) { Write-Host "5. Cancelar agendamento" -ForegroundColor White }
+    Write-Host "6. Sair da aplicacao" -ForegroundColor White
+    Write-Host "=============================" -ForegroundColor Cyan
+    $choice = Read-Host "Escolha uma opcao"
 
     switch ($choice) {
         "1" { 
             Send-WakeOnLan -mac $macAddress
             Write-Host "Ligando $hostname..."
             if (Wait-ForOnline -ip $ipAddress -timeout 30) {
-                Write-Host "$hostname esta ONLINE"
+                Write-Host "$hostname esta ONLINE" -ForegroundColor Green
                 if (Check-OMVService -remoteIP $ipAddress -user $username -password $plainPassword) {
-                    Write-Host "Servico OMV: ATIVO"
+                    Write-Host "Servico OMV: ATIVO" -ForegroundColor Cyan
                 } else {
-                    Write-Host "Servico OMV: INATIVO"
+                    Write-Host "Servico OMV: INATIVO" -ForegroundColor Yellow
                 }
             } else {
-                Write-Host "$hostname nao respondeu ao ping dentro do timeout."
+                Write-Host "$hostname nao respondeu ao ping dentro do timeout." -ForegroundColor Red
             }
         }
-        "2" { Remote-ShutdownSSH -remoteIP $ipAddress -user $username -password $plainPassword }
-        "3" { Write-Host "Desligando aplicacao..." }
-        "4" { SSH-Terminal -remoteIP $ipAddress -user $username -password $plainPassword }
-        "5" { 
-            Schedule-ShutdownSSH -remoteIP $ipAddress -user $username -password $plainPassword
-            Write-Host "!!! Agendamento realizado com sucesso !!!"
+        "2" { 
+            Remote-ShutdownSSH -remoteIP $ipAddress -user $username -password $plainPassword
         }
-        "6" {
-            if ($shutdownSchedule) {
-                Cancel-ShutdownSchedule -remoteIP $ipAddress -user $username -password $plainPassword
-                Write-Host "!!! Agendamento cancelado com sucesso !!!"
-            } else {
-                Write-Host "Nenhum agendamento ativo para cancelar."
-            }
+        "3" {
+            SSH-Access -remoteIP $ipAddress -user $username -password $plainPassword
         }
-        default { Write-Host "Opcao invalida." }
+        "4" {
+            $time = Read-Host "Digite o horario para desligamento (HH:mm)"
+            Schedule-Shutdown -time $time
+        }
+        "5" {
+            if ($scheduledShutdown) { Cancel-Shutdown }
+        }
+        "6" { Write-Host "Desligando aplicacao..." -ForegroundColor Cyan }
+        default { Write-Host "Opcao invalida." -ForegroundColor Red }
     }
 
-} while ($choice -ne "3")
+} while ($choice -ne "6")
