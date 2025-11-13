@@ -1,0 +1,96 @@
+# Os aplicativos são obtidos via winget
+# ID, Nome do aplicativo
+
+
+# =========================
+# FERRAMENTAS DE DIAGNOSTICO E MONITORAMENTO
+# =========================
+CPUID.CPU-Z, CPU-Z
+TechPowerUp.GPU-Z, GPU-Z
+#FinalWire.AIDA64Extreme, AIDA64 Extreme
+#HWiNFO.HWiNFO, HWiNFO
+#Speccy.Speccy, Speccy
+#CPUID.HWMonitor, HWMonitor
+#CrystalDewWorld.CrystalDiskInfo, CrystalDiskInfo
+#MemTest86.MemTest86, MemTest86
+#Geeks3D.FurMark, FurMark
+#Maxon.Cinebench, Cinebench
+
+# =========================
+# FERRAMENTAS DE LIMPEZA E OTIMIZACAO
+# =========================
+#Piriform.CCleaner, CCleaner
+#BleachBit.BleachBit, BleachBit
+#WinDirStat.WinDirStat, WinDirStat
+#JamSoftware.TreeSizeFree, TreeSize Free
+#Glarysoft.GlaryUtilities, Glary Utilities
+#WiseCleaner.WiseDiskCleaner, Wise Disk Cleaner
+#WiseCleaner.WiseRegistryCleaner, Wise Registry Cleaner
+#IObit.IObitUninstaller, IObit Uninstaller
+
+# =========================
+# FERRAMENTAS DE BACKUP E RECUPERACAO
+# =========================
+#Macrium.MacriumReflect, Macrium Reflect
+#EaseUS.EaseUSTodoBackup, EaseUS Todo Backup
+#Aomei.AomeiBackupper, AOMEI Backupper
+#Clonezilla.Clonezilla, Clonezilla
+#Redo.RedoRescue, Redo Rescue
+
+# =========================
+# FERRAMENTAS DE SEGURANCA E ANTIVIRUS
+# =========================
+#Malwarebytes.Malwarebytes, Malwarebytes
+#Kaspersky.KVRT, Kaspersky Virus Removal Tool
+#ESET.OnlineScanner, ESET Online Scanner
+#Avast.AvastFreeAntivirus, Avast Free Antivirus
+#Bitdefender.BitdefenderFree, Bitdefender Antivirus Free
+#Sophos.SophosHome, Sophos Home
+
+# =========================
+# FERRAMENTAS DE TESTE E BENCHMARK
+# =========================
+#GIMPS.Prime95, Prime95
+#Intel.IntelBurnTest, IntelBurnTest
+#Futuremark.3DMark, 3DMark
+#PassMark.PerformanceTest, PassMark PerformanceTest
+#UserBenchmark.UserBenchmark, UserBenchmark
+
+# =========================
+# FERRAMENTAS DE ARQUIVOS E COMPRESSAO
+# =========================
+#7zip.7zip, 7-Zip
+#PeaZip.PeaZip, PeaZip
+#WinRAR.WinRAR, WinRAR
+#Bandisoft.Bandizip, Bandizip
+#FreeFileSync.FreeFileSync, FreeFileSync
+#2BrightSparks.SyncBackFree, SyncBackFree
+
+# =========================
+# FERRAMENTAS DE SISTEMA E UTILITARIOS
+# =========================
+#Sysinternals.Autoruns, Autoruns
+#Sysinternals.ProcessExplorer, Process Explorer
+#WWHH.ProcessHacker, Process Hacker
+#Sysinternals.SysinternalsSuite, Sysinternals Suite
+#NirSoft.NirLauncher, NirLauncher
+#NirSoft.NirCmd, NirCmd
+
+# =========================
+# FERRAMENTAS DE INSTALACAO E GERENCIAMENTO
+# =========================
+#Ninite.Ninite, Ninite
+#Chocolatey.Chocolatey, Chocolatey
+#Scoop.Scoop, Scoop
+#PatchMyPC.PatchMyPC, Patch My PC
+
+# =========================
+# FERRAMENTAS DE REDE E CONECTIVIDADE
+# =========================
+#PuTTY.PuTTY, PuTTY
+#WinSCP.WinSCP, WinSCP
+#FileZilla.FileZilla, FileZilla
+#TeamViewer.TeamViewer, TeamViewer
+#AnyDesk.AnyDesk, AnyDesk
+#ChromeRemoteDesktop.ChromeRemoteDesktop, Chrome Remote Desktop
+#Microsoft.RDC, Remote Desktop Connection

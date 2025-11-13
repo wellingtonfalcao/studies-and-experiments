@@ -1,0 +1,8 @@
+2025-10-23 01:15:24 - === Inicio do processo de instalacao via Winget ===
+2025-10-23 01:15:25 - CPU-Z ja esta instalado.
+2025-10-23 01:15:26 - GPU-Z ja esta instalado.
+2025-10-23 01:15:27 - AIDA64 Extreme ja esta instalado.
+2025-10-23 01:15:28 - HWiNFO ja esta instalado.
+2025-10-23 01:15:28 - === Processo finalizado ===
+2025-10-23 01:15:28 - Total de programas instalados: 4 de 4
+2025-10-23 01:15:28 - Log completo em: E:\Repositórios\studies-and-experiments\Bat\pecismo-apps\Logs\winget_install_log_20251023_011524.txt

@@ -1,0 +1,6 @@
+2025-10-23 01:28:55 - === Inicio do processo de instalacao via Winget ===
+2025-10-23 01:28:56 - CPU-Z ja esta instalado.
+2025-10-23 01:28:57 - GPU-Z ja esta instalado.
+2025-10-23 01:28:57 - === Processo finalizado ===
+2025-10-23 01:28:57 - Total de programas instalados: 2 de 2
+2025-10-23 01:28:57 - Log completo em: E:\Repositórios\studies-and-experiments\Bat\pecismo-apps\Logs\winget_install_log_20251023_012855.txt
