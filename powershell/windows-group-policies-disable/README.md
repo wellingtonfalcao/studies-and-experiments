@@ -1,57 +1,80 @@
 # Windows Optimization Scripts
+Uma coleção de scripts PowerShell para otimizar o desempenho do Windows desabilitando recursos desnecessários e telemetria. Baseado no trabalho de **Enzo Thulio** do canal **1155doET** no YouTube.
 
-This repository contains PowerShell scripts to optimize Windows performance and privacy by disabling unnecessary features and telemetry. The scripts are based on the manual steps provided by Enzo Thulio from the ([1155doET](https://www.youtube.com/watch?v=kQM-iv7TQz0)).
+---
 
-## Credits
+## 📋 Table of Contents
+- [Overview](#-overview)
+- [Features](#-features)
+- [Prerequisites](#️-prerequisites)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Script Details](#-script-details)
+- [Restoration](#-restoration)
+- [Credits](#-credits)
+- [Disclaimer](#️-disclaimer)
+- [Support](#-support)
 
-- **Author**: Wellington Falcão ([wellingtonfalcao@gmail.com](mailto:wellingtonfalcao@gmail.com))
-- **Original Inspiration**: Enzo Thulio (1155doET)
+---
 
-## Scripts
+## 🚀 Overview
+Esses scripts PowerShell foram criados para melhorar o desempenho do Windows em máquinas de baixa performance, desabilitando diversos serviços, telemetria, processos em segundo plano e funcionalidades que consomem recursos.  
+As otimizações seguem configurações manuais demonstradas por **Enzo Thulio (1155doET)**.
 
-### 1. Optimization Script (`disable-policies.ps1`)
+---
 
-This script applies various optimizations to Windows by disabling telemetry, cloud content, background apps, and other features that may impact performance and privacy.
+## ✨ Features
 
-#### Features Disabled/Configured:
+### **Disabled/Configured Services**
 
-- Telemetry and diagnostic data
-- Application compatibility telemetry
-- Cloud content and consumer features
-- Location and sensors
-- Automatic updates (configured to notify before download)
-- Microsoft Edge prelaunch and tab preloading
-- Cortana and cloud search
-- Background apps
-- Error reporting
-- Settings sync
-- Advertising ID
-- Activity feed
+#### **Telemetry & Diagnostics**
+- Allow diagnostic data → **Disabled**
+- Application Telemetry → **Disabled**
+- Application Compatibility Telemetry → **Disabled**
+- Program Compatibility Assistant → **Disabled**
+- Inventory Collector → **Disabled**
+- SwitchBack Compatibility → **Disabled**
+- Steps Recorder → **Disabled**
 
-#### How to Use
+#### **Cloud Services**
+- Cloud optimized content → **Disabled**
+- Consumer cloud account state content → **Disabled**
+- Windows tips → **Disabled**
+- Automatic speech data updates → **Disabled**
 
-1. Download the script `disable-policies.ps1`.
-2. Right-click on the script and select "Run with PowerShell" or run in an elevated PowerShell session.
-3. Restart your computer after the script completes.
+#### **Privacy & Location**
+- Account-based insights in File Explorer → **Disabled**
+- Windows location provider → **Disabled**
+- Location services → **Disabled**
+- Sensors → **Disabled**
 
-**Note**: Run the script as Administrator.
+#### **Search & Cortana**
+- Cortana → **Disabled**
+- Cloud search → **Disabled**
+- Search highlights → **Disabled**
+- Search location access → **Disabled**
+- Automatic language detection → **Disabled**
 
-### 2. Restoration Script (`restore-defaults.ps1`)
+#### **Updates & Background Apps**
+- Automatic update downloads → **Notify before download**
+- Background apps → **Forced denial**
+- Activity feed → **Disabled**
 
-This script restores the default Windows settings by removing the policies set by the optimization script.
+---
 
-#### How to Use
+## ⚙️ Prerequisites
+- Windows 10 ou Windows 11  
+- PowerShell com execução habilitada  
+- Privilégios de administrador
 
-1. Download the script `restore-defaults.ps1`.
-2. Right-click on the script and select "Run with PowerShell" or run in an elevated PowerShell session.
-3. Restart your computer after the script completes.
+---
 
-**Note**: Run the script as Administrator.
+## 📥 Installation
 
-## Disclaimer
+### **1. Baixar os scripts**
+```powershell
+# Download do script de otimização
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/your-repo/windows-optimization/main/debloat-windows.ps1" -OutFile "debloat-windows.ps1"
 
-Use these scripts at your own risk. The authors are not responsible for any issues that may arise from using these scripts. It is recommended to back up your system before making any changes.
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
+# Download do script de restauração
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/your-repo/windows-optimization/main/restore-windows.ps1" -OutFile "restore-windows.ps1"
