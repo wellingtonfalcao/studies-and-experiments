@@ -1,6 +1,6 @@
 # Windows Optimization Scripts
 
-This repository contains PowerShell scripts to optimize Windows performance and privacy by disabling unnecessary features and telemetry. The scripts are based on the manual steps provided by Enzo Thulio from the [1155doET YouTube channel]([https://www.youtube.com/@1155doET](https://www.youtube.com/watch?v=kQM-iv7TQz0&t=2244s)).
+This repository contains PowerShell scripts to optimize Windows performance and privacy by disabling unnecessary features and telemetry. The scripts are based on the manual steps provided by Enzo Thulio from the ([1155doET](https://www.youtube.com/watch?v=kQM-iv7TQz0)).
 
 ## Credits
 
