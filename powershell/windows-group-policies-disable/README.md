@@ -9,7 +9,7 @@ This repository contains PowerShell scripts to optimize Windows performance and 
 
 ## Scripts
 
-### 1. Optimization Script (`debloat-windows.ps1`)
+### 1. Optimization Script (`disable-policies.ps1`)
 
 This script applies various optimizations to Windows by disabling telemetry, cloud content, background apps, and other features that may impact performance and privacy.
 
