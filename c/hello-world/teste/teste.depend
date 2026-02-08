@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1770434431 source:e:\repositórios\studies-and-experiments\c\hello-world\teste\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1770429105 source:e:\repositórios\studies-and-experiments\c\hello-world\teste\variaveis.c
+	<stdio.h>
+	<stdlib.h>
+
