@@ -35,3 +35,6 @@ function App() {
 }
 
 export default App;
+
+
+// Aula 06 parada em 20:10
